@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: eureka-server  #全部小写
+server:
+  port: 8000
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+  server:
+    enable-self-preservation: false
+---
+spring:
+  profiles: peer1
+server:
+  port: 8000
+eureka:
+  instance:
+    hostname: peer1
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    serviceUrl:
+      defaultZone: http://peer2:8001/eureka/
+---
+spring:
+  profiles: peer2
+server:
+  port: 8001
+eureka:
+  instance:
+    hostname: peer2
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    serviceUrl:
+      defaultZone: http://peer1:8000/eureka/

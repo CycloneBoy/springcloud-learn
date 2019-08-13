@@ -1,0 +1,35 @@
+package com.cycloneboy.springcloud.feignconsumer.service;
+
+import com.cycloneboy.springcloud.common.domain.BaseResponse;
+import com.cycloneboy.springcloud.common.domain.dto.mafengwo.TravelNoteDto;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.*;
+
+/**
+ * Create by  sl on 2019-08-12 23:56
+ */
+
+@FeignClient("mafengwo")
+public interface TravelNoteService {
+
+    @RequestMapping("/travelnote/{id}")
+    BaseResponse queryTravelNote(@PathVariable("id") Integer id);
+
+
+    @GetMapping("/hello/hello")
+    BaseResponse queryTravelNote();
+
+
+    @GetMapping("/hello/hello1")
+    BaseResponse queryTravelNote(@RequestParam("name") String  name);
+
+
+    @GetMapping("/hello/hello2")
+    BaseResponse queryTravelNote(@RequestHeader("name") String  name, @RequestHeader("age") Integer age);
+
+
+    @PostMapping("/hello/hello3")
+    BaseResponse queryTravelNote(@RequestBody TravelNoteDto travelNoteDto);
+
+}

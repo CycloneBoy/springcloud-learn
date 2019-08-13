@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.cycloneboy.springcloud</groupId>
+    <artifactId>learn</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <name>${project.artifactId}</name>
+    <packaging>pom</packaging>
+    <description>springcloud 学习</description>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.7.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <modules>
+        <module>common</module>
+        <module>eureka-server</module>
+        <module>mafengwo</module>
+        <module>consumer-server</module>
+        <module>hystrix-dashboard</module>
+        <module>turbine</module>
+        <module>feign-consumer</module>
+        <module>mafengwo-service-api</module>
+    </modules>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+
+        <spring-boot.version>2.1.7.RELEASE</spring-boot.version>
+        <spring-cloud.version>Greenwich.SR2</spring-cloud.version>
+        <spring-platform.version>Cairo-SR8</spring-platform.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <spring-boot-admin.version>2.1.6</spring-boot-admin.version>
+        <hutool.version>4.6.1</hutool.version>
+        <mybatis-plus.version>3.1.2</mybatis-plus.version>
+        <kaptcha.version>0.0.9</kaptcha.version>
+        <velocity.version>1.7</velocity.version>
+        <jasypt.version>2.1.0</jasypt.version>
+        <security.oauth.version>2.3.6.RELEASE</security.oauth.version>
+        <jackson.modules>2.9.8</jackson.modules>
+        <!--zipkin2.12.x需要此版本jooq-->
+        <jooq.version>3.11.11</jooq.version>
+        <zipkin.version>2.12.2</zipkin.version>
+        <zipkin-storage-mysql.version>2.8.4</zipkin-storage-mysql.version>
+        <mybatis-plus.version>3.1.2</mybatis-plus.version>
+
+
+        <fastjson.version>1.2.49</fastjson.version>
+        <durid.version>1.1.13</durid.version>
+        <cycloneboy.common.version>0.0.1-SNAPSHOT</cycloneboy.common.version>
+        <cycloneboy.learn.version>0.0.1-SNAPSHOT</cycloneboy.learn.version>
+        <cycloneboy.api.version>0.0.1-SNAPSHOT</cycloneboy.api.version>
+        <apache.beanutils.version>1.9.3</apache.beanutils.version>
+    </properties>
+
+
+
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- cycloneboy -->
+            <dependency>
+                <groupId>com.cycloneboy.springcloud</groupId>
+                <artifactId>common</artifactId>
+                <version>${cycloneboy.common.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.cycloneboy.springcloud</groupId>
+                <artifactId>mafengwo-service-api</artifactId>
+                <version>${cycloneboy.api.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>${apache.beanutils.version}</version>
+            </dependency>
+
+
+            <!--            <dependency>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-starter</artifactId>-->
+<!--            </dependency>-->
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-starter-actuator</artifactId>-->
+<!--            </dependency>-->
+
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-devtools</artifactId>-->
+<!--                <scope>runtime</scope>-->
+<!--                <optional>true</optional>-->
+<!--            </dependency>-->
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-starter-test</artifactId>-->
+<!--                <scope>test</scope>-->
+<!--            </dependency>-->
+
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.spring.platform</groupId>
+                <artifactId>platform-bom</artifactId>
+                <version>${spring-platform.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+
+
+        </dependencies>
+    </dependencyManagement>
+
+
+    <!-- mainModule -->
+    <build>
+<!--        <finalName>${project.name}</finalName>-->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot.version}</version>
+<!--                    <configuration>-->
+<!--                        <finalName>${project.build.finalName}</finalName>-->
+<!--                    </configuration>-->
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <!-- 资源文件拷贝插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                    <target>${maven.compiler.target}</target>
+                    <source>${maven.compiler.source}</source>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+<!--    <repositories>-->
+<!--        &lt;!&ndash;阿里云主仓库，代理了maven central和jcenter仓库&ndash;&gt;-->
+<!--        <repository>-->
+<!--            <id>aliyun</id>-->
+<!--            <name>aliyun</name>-->
+<!--            <url>https://maven.aliyun.com/repository/public</url>-->
+<!--            <releases>-->
+<!--                <enabled>true</enabled>-->
+<!--            </releases>-->
+<!--            <snapshots>-->
+<!--                <enabled>false</enabled>-->
+<!--            </snapshots>-->
+<!--        </repository>-->
+<!--        &lt;!&ndash;阿里云代理Spring 官方仓库&ndash;&gt;-->
+<!--        <repository>-->
+<!--            <id>spring-milestones</id>-->
+<!--            <name>Spring Milestones</name>-->
+<!--            <url>https://maven.aliyun.com/repository/spring</url>-->
+<!--            <releases>-->
+<!--                <enabled>true</enabled>-->
+<!--            </releases>-->
+<!--            <snapshots>-->
+<!--                <enabled>false</enabled>-->
+<!--            </snapshots>-->
+<!--        </repository>-->
+<!--    </repositories>-->
+<!--    <pluginRepositories>-->
+<!--        &lt;!&ndash;阿里云代理Spring 插件仓库&ndash;&gt;-->
+<!--        <pluginRepository>-->
+<!--            <id>spring-plugin</id>-->
+<!--            <name>spring-plugin</name>-->
+<!--            <url>https://maven.aliyun.com/repository/spring-plugin</url>-->
+<!--            <releases>-->
+<!--                <enabled>true</enabled>-->
+<!--            </releases>-->
+<!--            <snapshots>-->
+<!--                <enabled>false</enabled>-->
+<!--            </snapshots>-->
+<!--        </pluginRepository>-->
+<!--    </pluginRepositories>-->
+</project>

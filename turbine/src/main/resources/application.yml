@@ -1,0 +1,20 @@
+server:
+  port: 9030
+spring:
+  application:
+    name: turbine  #全部小写
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8000/eureka/
+#      defaultZone: http://peer1:8000/eureka/
+  instance:
+    prefer-ip-address: true
+
+
+turbine:
+  app-config: CONSUMER-SERVER
+#  cluster-name-expression: "default"
+  combine-host-port: true
+
