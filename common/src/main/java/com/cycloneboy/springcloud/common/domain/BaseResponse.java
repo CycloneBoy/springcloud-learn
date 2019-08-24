@@ -29,6 +29,10 @@ public class BaseResponse {
         return new BaseResponse(HttpExceptionEnum.FAILED);
     }
 
+    public static BaseResponse failed(String message) {
+        return new BaseResponse(HttpExceptionEnum.FAILED, message);
+    }
+
     public BaseResponse() {
         this.code = HttpExceptionEnum.SUCCESS.getCode();
         this.message = HttpExceptionEnum.SUCCESS.getMessage();

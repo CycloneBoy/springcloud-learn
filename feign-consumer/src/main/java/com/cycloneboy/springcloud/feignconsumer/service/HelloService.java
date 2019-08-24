@@ -1,13 +1,5 @@
 package com.cycloneboy.springcloud.feignconsumer.service;
 
-import com.cycloneboy.springcloud.common.domain.BaseResponse;
-import com.cycloneboy.springcloud.common.domain.dto.mafengwo.TravelNoteDto;
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-
 /**
  * Create by  sl on 2019-08-13 22:57
  */

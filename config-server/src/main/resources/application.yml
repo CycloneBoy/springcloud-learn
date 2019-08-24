@@ -1,0 +1,30 @@
+server:
+  port: 9060
+spring:
+  application:
+    name: config-server  #全部小写
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/CycloneBoy/spring-cloud-config-server
+          search-paths:
+          username: xuanfeng1992@gmail.com
+          password:
+          basedir: /home/sl/workspace/java/a2019/springcloud-learn-config-git
+  security:
+    user:
+      name: admin
+      password: admin
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8000/eureka/
+  #      defaultZone: http://peer1:8000/eureka/
+  instance:
+    prefer-ip-address: true
+
+
+
+

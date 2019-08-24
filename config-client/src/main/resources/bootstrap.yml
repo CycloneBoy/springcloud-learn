@@ -1,0 +1,38 @@
+server:
+  port: 9070
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8000/eureka/
+  #      defaultZone: http://peer1:8000/eureka/
+  instance:
+    prefer-ip-address: true
+
+spring:
+  application:
+    name: springcloud-config  #全部小写
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
+      profile: dev
+      label: master
+      #      uri: http://localhost:9060/
+      username: admin
+      password: admin
+      fail-fast: true
+
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+    shutdown:
+      enabled: true

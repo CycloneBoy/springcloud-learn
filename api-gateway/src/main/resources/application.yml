@@ -1,0 +1,36 @@
+server:
+  port: 9050
+spring:
+  application:
+    name: api-gateway  #全部小写
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8000/eureka/
+  #      defaultZone: http://peer1:8000/eureka/
+  instance:
+    prefer-ip-address: true
+
+zuul:
+  routes:
+    api-a-url:
+      path: /api-a-url/**
+      url: mafengwo
+    api-b-url:
+      path: /api-b-url/**
+      url: feign-consumer
+    api-c-url:
+      path: /api-c-url/**
+      url: forward:/local
+      sensitive-headers:
+    mafengwo: /mafengwo/**
+  ignored-services: /**/hello/**
+  add-host-header: true
+  AccessFilter:
+    pre:
+      disable: true
+
+#  prefix: /api
+#  strip-prefix: false
+

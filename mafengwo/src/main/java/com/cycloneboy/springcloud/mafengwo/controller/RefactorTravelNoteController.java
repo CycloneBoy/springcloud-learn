@@ -5,7 +5,6 @@ import com.cycloneboy.springcloud.common.domain.dto.mafengwo.TravelNoteDto;
 import com.cycloneboy.springcloud.mafengwoserviceapi.service.TravelNoteService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
