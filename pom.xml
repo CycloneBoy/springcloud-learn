@@ -30,6 +30,7 @@
         <module>api-gateway</module>
         <module>config-server</module>
         <module>config-client</module>
+        <module>kafka-hello</module>
     </modules>
 
     <properties>

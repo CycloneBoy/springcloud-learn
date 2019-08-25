@@ -12,6 +12,26 @@ eureka:
 spring:
   application:
     name: mafengwo
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
+      profile: dev
+      label: master
+      #      uri: http://localhost:9060/
+      username: admin
+      password: admin
+      fail-fast: true
+    stream:
+      bindings:
+        travel-image-output:
+          destination: travel-image
+          contentType: application/json
+        travel-image-input:
+          destination: travel-image
+          contentType: application/json
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/videoweb?useSSL=false

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cycloneboy.springcloud.mafengwo.dao.TravelImageMapper">
+
+  <!-- 通用查询映射结果 -->
+  <resultMap id="BaseResultMap" type="com.cycloneboy.springcloud.mafengwo.entity.TravelImage">
+    <id column="id" property="id"/>
+    <result column="note_id" property="noteId"/>
+    <result column="image_id" property="imageId"/>
+    <result column="vote_num" property="voteNum"/>
+    <result column="reply_num" property="replyNum"/>
+    <result column="share_num" property="shareNum"/>
+    <result column="original_url" property="originalUrl"/>
+    <result column="name" property="name"/>
+    <result column="category" property="category"/>
+    <result column="cover" property="cover"/>
+    <result column="url" property="url"/>
+
+  </resultMap>
+
+
+  <!-- 通用查询结果列 -->
+  <sql id="Base_Column_List">
+    id,
+    note_id,
+    image_id,
+    vote_num,
+    reply_num,
+    share_num,
+    original_url,
+    name,
+    category,
+    cover,
+    url
+  </sql>
+
+</mapper>

@@ -1,0 +1,50 @@
+server:
+  port: 9080
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8000/eureka/
+  #      defaultZone: http://peer1:8000/eureka/
+  instance:
+    prefer-ip-address: true
+
+spring:
+  application:
+    name: kafka-hello  #全部小写
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
+      profile: dev
+      label: master
+      #      uri: http://localhost:9060/
+      username: admin
+      password: admin
+      fail-fast: true
+    stream:
+      bindings:
+        greetings-in:
+          destination: greetings
+          contentType: application/json
+        greetings-out:
+          destination: greetings
+          contentType: application/json
+
+        travel-image-output:
+          destination: travel-image
+          contentType: application/json
+        travel-image-input:
+          destination: travel-image
+          contentType: application/json
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+    shutdown:
+      enabled: true

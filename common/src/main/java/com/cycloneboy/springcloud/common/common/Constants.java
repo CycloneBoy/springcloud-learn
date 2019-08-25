@@ -29,4 +29,12 @@ public class Constants {
      */
     public static final String TRAVEL_NOTE_URI = "http://MAFENGWO/travelnote";
 
+    public static final int DOWNLOAD_TIME_OUT = 5000;
+
+    //文件保存路径
+    public static final String FILE_IMAGE_DESTINATION_DIR = "/home/sl/workspace/image";
+
+    // kafka 输出topic
+    public static final String KAFKA_SENDER_TRAVEL_IMAGE_OUTPUT = "travel-image-output";
+    public static final String KAFKA_SENDER_TRAVEL_IMAGE_INPUT = "travel-image-input";
 }
