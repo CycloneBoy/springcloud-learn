@@ -1,5 +1,8 @@
 package com.cycloneboy.springcloud.common.common;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * create by CycloneBoy on 2019-06-21 20:48
  */
@@ -34,7 +37,28 @@ public class Constants {
     //文件保存路径
     public static final String FILE_IMAGE_DESTINATION_DIR = "/home/sl/workspace/image";
 
+    public static final String FILE_IMAGE_DESTINATION_DIR_2 =
+        FILE_IMAGE_DESTINATION_DIR + "/test_thread2";
+
     // kafka 输出topic
     public static final String KAFKA_SENDER_TRAVEL_IMAGE_OUTPUT = "travel-image-output";
     public static final String KAFKA_SENDER_TRAVEL_IMAGE_INPUT = "travel-image-input";
+
+    //测试图片1
+    public static final String IMAGE_URL_1 = "http://p4-q.mafengwo.net/s14/M00/9B/43/wKgE2l0hhqOAAQg8AAkz36AHSzE097.jpg";
+    public static final String IMAGE_URL_2 = "http://p2-q.mafengwo.net/s13/M00/81/EC/wKgEaVxurrWAUTOOAA1LEKH6-kk79.jpeg";
+    public static final String IMAGE_URL_3 = "http://n1-q.mafengwo.net/s11/M00/83/64/wKgBEFqWr3mAEBGaAARhMfgKY9Q27.jpeg";
+    public static final String IMAGE_URL_4 = "http://p1-q.mafengwo.net/s13/M00/75/12/wKgEaVyFX4-AR8AeAAbAftcsx7g85.jpeg";
+    public static final String IMAGE_URL_5 = "http://p1-q.mafengwo.net/s11/M00/83/55/wKgBEFqWr3KAJUtDAA6N1sNBoTA89.jpeg";
+    public static final String IMAGE_URL_6 = "http://n3-q.mafengwo.net/s14/M00/AC/60/wKgE2l1dYiOARVnGABJSNuQS7Nw131.jpg";
+    public static final String IMAGE_URL_7 = "http://n1-q.mafengwo.net/s11/M00/83/47/wKgBEFqWr2iAE5jMAAsNI_cwcsI24.jpeg";
+    public static final String IMAGE_URL_8 = "http://p4-q.mafengwo.net/s11/M00/83/81/wKgBEFqWr4iALB0iAAYbQDiRIyk88.jpeg";
+    public static final String IMAGE_URL_9 = "http://n2-q.mafengwo.net/s11/M00/F1/76/wKgBEFpmfjWAZLVlAAQp4c-rFoY71.jpeg";
+    public static final String IMAGE_URL_10 = "http://p4-q.mafengwo.net/s14/M00/F4/42/wKgE2l1PmGCAX12nAA5h2_8o-1A06.jpeg";
+
+    public static final List<String> IMAGE_URL_LIST = Arrays
+        .asList(IMAGE_URL_1, IMAGE_URL_2, IMAGE_URL_3, IMAGE_URL_4, IMAGE_URL_5,
+            IMAGE_URL_6, IMAGE_URL_7, IMAGE_URL_8, IMAGE_URL_9, IMAGE_URL_10);
+    //下载图片的开启的线程数
+    public static final int DEFAULT_THREAD_NUM = 1;
 }

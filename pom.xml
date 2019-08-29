@@ -31,6 +31,7 @@
         <module>config-server</module>
         <module>config-client</module>
         <module>kafka-hello</module>
+        <module>travel-note</module>
     </modules>
 
     <properties>
@@ -67,6 +68,9 @@
         <cycloneboy.learn.version>0.0.1-SNAPSHOT</cycloneboy.learn.version>
         <cycloneboy.api.version>0.0.1-SNAPSHOT</cycloneboy.api.version>
         <apache.beanutils.version>1.9.3</apache.beanutils.version>
+
+
+
     </properties>
 
 
@@ -78,6 +82,13 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
