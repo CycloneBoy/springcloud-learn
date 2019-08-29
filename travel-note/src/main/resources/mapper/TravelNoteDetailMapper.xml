@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cycloneboy.springcloud.travelnote.dao.TravelNoteDetailMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.cycloneboy.springcloud.travelnote.entity.TravelNoteDetail">
+        <id column="id" property="id" />
+        <result column="uid" property="uid" />
+        <result column="author_id" property="authorId" />
+        <result column="note_id" property="noteId" />
+        <result column="destination_id" property="destinationId" />
+        <result column="url" property="url" />
+        <result column="note_name" property="noteName" />
+        <result column="content" property="content" />
+        <result column="short_content" property="shortContent"/>
+        <result column="image_url" property="imageUrl" />
+        <result column="view_count" property="viewCount" />
+        <result column="comment_count" property="commentCount" />
+        <result column="up_count" property="upCount" />
+        <result column="collect_count" property="collectCount" />
+        <result column="share_count" property="shareCount" />
+        <result column="word_count" property="wordCount" />
+        <result column="image_count" property="imageCount" />
+        <result column="help_people_count" property="helpPeopleCount" />
+        <result column="destination" property="destination" />
+        <result column="travel_time" property="travelTime" />
+        <result column="travel_day" property="travelDay" />
+        <result column="travel_people" property="travelPeople" />
+        <result column="travel_cost" property="travelCost" />
+        <result column="status" property="status" />
+        <result column="crawl_time" property="crawlTime" />
+        <result column="create_datetime" property="createDatetime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, uid, author_id, note_id, destination_id, url, note_name, content, short_content,image_url, view_count, comment_count, up_count, collect_count, share_count, word_count, image_count, help_people_count, destination, travel_time, travel_day, travel_people, travel_cost, status, crawl_time, create_datetime
+    </sql>
+
+</mapper>

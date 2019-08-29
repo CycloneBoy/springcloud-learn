@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cycloneboy.springcloud.travelnote.dao.TravelNoteMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.cycloneboy.springcloud.travelnote.entity.TravelNote">
+        <id column="id" property="id"/>
+        <result column="year" property="year"/>
+        <result column="month" property="month"/>
+        <result column="day" property="day"/>
+        <result column="url" property="url"/>
+        <result column="note_image_url" property="noteImageUrl"/>
+        <result column="destination" property="destination"/>
+        <result column="author_url" property="authorUrl"/>
+        <result column="author_name" property="authorName"/>
+        <result column="author_image_url" property="authorImageUrl"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, year, month, day, url, note_image_url, destination, author_url, author_name, author_image_url, create_time
+    </sql>
+
+</mapper>

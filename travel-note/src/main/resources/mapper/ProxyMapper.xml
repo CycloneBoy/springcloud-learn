@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cycloneboy.springcloud.travelnote.dao.ProxyMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.cycloneboy.springcloud.travelnote.entity.Proxy">
+        <id column="id" property="id" />
+        <result column="type" property="type" />
+        <result column="ip" property="ip" />
+        <result column="port" property="port" />
+        <result column="protocol" property="protocol" />
+        <result column="speed" property="speed" />
+        <result column="time" property="time" />
+        <result column="liveTime" property="liveTime" />
+        <result column="checkTime" property="checkTime" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, type, ip, port, protocol, speed, time, liveTime, checkTime, create_time, update_time
+    </sql>
+
+</mapper>
