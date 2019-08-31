@@ -1,7 +1,7 @@
 package com.cycloneboy.springcloud.travelnote.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.cycloneboy.springcloud.travelnote.entity.TravelNote;
+import com.cycloneboy.springcloud.common.entity.TravelNote;
 import org.apache.ibatis.annotations.Mapper;
 
 

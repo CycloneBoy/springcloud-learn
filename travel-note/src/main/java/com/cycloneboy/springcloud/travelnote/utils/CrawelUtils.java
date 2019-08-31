@@ -2,11 +2,12 @@ package com.cycloneboy.springcloud.travelnote.utils;
 
 import static com.cycloneboy.springcloud.travelnote.common.Constants.MAFENGWO_PHOTO_SCENERY_URL_REGEX;
 
+import com.cycloneboy.springcloud.common.entity.TravelNoteDetail;
 import com.cycloneboy.springcloud.travelnote.domain.Note.AuthorAndNoteList;
 import com.cycloneboy.springcloud.travelnote.entity.NoteAuthor;
-import com.cycloneboy.springcloud.travelnote.entity.TravelNoteDetail;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -278,13 +279,15 @@ public class CrawelUtils {
                             travelDay.lastIndexOf("天") - 1)));
             travelNoteDetail.setTravelPeople(travelPeople.substring(travelPeople.lastIndexOf("物") + 1).trim());
             travelNoteDetail.setTravelCost(Integer.parseInt(
-                    travelCost.substring(travelCost.lastIndexOf("用") + 1, travelCost.lastIndexOf("RMB") - 1)));
+                travelCost
+                    .substring(travelCost.lastIndexOf("用") + 1, travelCost.lastIndexOf("RMB"))));
 
         } catch (Exception e) {
             log.info("parse 出游时间 人数和天数出错");
         }
 
         travelNoteDetail.setStatus(1);
+        travelNoteDetail.setCrawlTime(LocalDateTime.now());
 
 //        log.info(noteName);
 //        log.info(upNumber);

@@ -1,7 +1,8 @@
 package com.cycloneboy.springcloud.travelnote.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.cycloneboy.springcloud.travelnote.entity.TravelNoteDetail;
+import com.cycloneboy.springcloud.common.entity.TravelNoteDetail;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.cycloneboy.springcloud.travelnote.entity.TravelNoteDetail;
  * @author cycloneboy
  * @since 2019-08-05
  */
+@Service
 public interface TravelNoteDetailService extends IService<TravelNoteDetail> {
 
 }

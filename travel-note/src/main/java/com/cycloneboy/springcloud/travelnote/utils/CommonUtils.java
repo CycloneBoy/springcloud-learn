@@ -5,10 +5,10 @@ import static com.cycloneboy.springcloud.travelnote.common.Constants.HOUR_CN;
 import static com.cycloneboy.springcloud.travelnote.common.Constants.MINUTE_CN;
 import static com.cycloneboy.springcloud.travelnote.common.Constants.SECOND_CN;
 
+import com.cycloneboy.springcloud.common.entity.TravelImage;
 import com.cycloneboy.springcloud.travelnote.domain.ImageInfoRequest;
 import com.cycloneboy.springcloud.travelnote.domain.PhotoInfo;
 import com.cycloneboy.springcloud.travelnote.domain.TravelImageRequest;
-import com.cycloneboy.springcloud.travelnote.entity.TravelImage;
 
 public class CommonUtils {
 

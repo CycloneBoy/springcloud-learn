@@ -24,13 +24,12 @@ spring:
       password: admin
       fail-fast: true
     stream:
+      default-binder: kafka
       bindings:
-        travel-image-output:
-          destination: travel-image
-          contentType: application/json
-        travel-image-input:
-          destination: travel-image
-          contentType: application/json
+        travel-image-send:
+          destination: travel-image-send
+
+
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

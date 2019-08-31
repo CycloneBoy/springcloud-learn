@@ -1,8 +1,8 @@
 package com.cycloneboy.springcloud.travelnote.controller;
 
+import com.cycloneboy.springcloud.common.entity.TravelNoteDetail;
 import com.cycloneboy.springcloud.travelnote.domain.Note.AuthorAndNoteList;
 import com.cycloneboy.springcloud.travelnote.domain.Note.AuthorNoteListRequest;
-import com.cycloneboy.springcloud.travelnote.entity.TravelNoteDetail;
 import com.cycloneboy.springcloud.travelnote.processor.AuthorNoteProcessor;
 import com.cycloneboy.springcloud.travelnote.processor.AuthorProcessor;
 import com.cycloneboy.springcloud.travelnote.service.NoteAuthorService;

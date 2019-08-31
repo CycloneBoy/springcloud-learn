@@ -41,8 +41,18 @@ public class Constants {
         FILE_IMAGE_DESTINATION_DIR + "/test_thread2";
 
     // kafka 输出topic
+    // 游记图片
     public static final String KAFKA_SENDER_TRAVEL_IMAGE_OUTPUT = "travel-image-output";
-    public static final String KAFKA_SENDER_TRAVEL_IMAGE_INPUT = "travel-image-input";
+    public static final String KAFKA_SENDER_TRAVEL_IMAGE_SEND = "travel-image-send";
+
+    // 热门游记
+    public static final String KAFKA_SENDER_TRAVEL_NOTE_OUTPUT = "travel-note-output";
+    public static final String KAFKA_SENDER_TRAVEL_NOTE_SAVE = "travel-note-save";
+
+    // 热门游记
+    public static final String KAFKA_SENDER_TRAVEL_NOTE_DETAIL_OUTPUT = "travel-note-detail-output";
+    public static final String KAFKA_SENDER_TRAVEL_NOTE_DETAIL_SAVE = "travel-note-detail-save";
+
 
     //测试图片1
     public static final String IMAGE_URL_1 = "http://p4-q.mafengwo.net/s14/M00/9B/43/wKgE2l0hhqOAAQg8AAkz36AHSzE097.jpg";

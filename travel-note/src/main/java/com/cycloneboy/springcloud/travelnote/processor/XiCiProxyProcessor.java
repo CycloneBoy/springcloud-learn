@@ -1,10 +1,15 @@
 package com.cycloneboy.springcloud.travelnote.processor;
 
-import com.cycloneboy.springcloud.travelnote.common.Constants;
+import static com.cycloneboy.springcloud.travelnote.common.Constants.MAFENGWO_HOST_URL;
+import static com.cycloneboy.springcloud.travelnote.common.Constants.PORXY_TYPE_XICI;
+import static com.cycloneboy.springcloud.travelnote.common.Constants.THREAD_DEFAULT_NUM;
+import static com.cycloneboy.springcloud.travelnote.utils.CommonUtils.parseSecond;
+import static com.cycloneboy.springcloud.travelnote.utils.CommonUtils.parseTimeStr;
+import static com.cycloneboy.springcloud.travelnote.utils.TimeUtils.parseDateTime;
+
 import com.cycloneboy.springcloud.travelnote.domain.proxy.XiciProxy;
 import com.cycloneboy.springcloud.travelnote.entity.Proxy;
 import com.cycloneboy.springcloud.travelnote.service.ProxyService;
-import com.cycloneboy.springcloud.travelnote.utils.CommonUtils;
 import com.cycloneboy.springcloud.travelnote.utils.ProxyUtils;
 import com.cycloneboy.springcloud.travelnote.utils.TimeUtils;
 import java.time.LocalDateTime;
@@ -59,29 +64,31 @@ public class XiCiProxyProcessor implements PageProcessor {
 
             String protocol = selectable.xpath("//td[6]/text()").toString();
             String speedStr = selectable.xpath("//td[7]/div/@title").toString();
-            Float speed = CommonUtils.parseSecond(speedStr);
+            Float speed = parseSecond(speedStr);
 
             String timeStr = selectable.xpath("//td[8]/div/@title").toString();
-            Float time = CommonUtils.parseSecond(timeStr);
+            Float time = parseSecond(timeStr);
 
             String liveTimeStr = selectable.xpath("//td[9]/text()").toString();
-            Integer liveTime = CommonUtils.parseTimeStr(liveTimeStr);
+            Integer liveTime = parseTimeStr(liveTimeStr);
 
             String checkTimeStr = selectable.xpath("//td[10]/text()").toString();
-            LocalDateTime checkTime = TimeUtils.parseDateTime(checkTimeStr, TimeUtils.DEFAULT_TIME_FORMAT_NO_SECOND);
+            LocalDateTime checkTime = parseDateTime(checkTimeStr,
+                TimeUtils.DEFAULT_TIME_FORMAT_NO_SECOND);
             XiciProxy xiciProxy = new XiciProxy(ip, port, protocol, speed, time, liveTime, checkTime);
             log.info(xiciProxy.toString());
             xiciProxyList.add(xiciProxy);
 
             Proxy proxy = new Proxy();
-            proxy.setType(Constants.PORXY_TYPE_XICI);
+            proxy.setType(PORXY_TYPE_XICI);
             proxy.setIp(ip);
             proxy.setPort(port);
             proxy.setProtocol(protocol);
             proxy.setSpeed(speed);
             proxy.setTime(time);
             proxy.setLiveTime(liveTime);
-            proxy.setCheckTime(TimeUtils.parseDateTime(checkTimeStr, TimeUtils.DEFAULT_TIME_FORMAT_NO_SECOND));
+            proxy
+                .setCheckTime(parseDateTime(checkTimeStr, TimeUtils.DEFAULT_TIME_FORMAT_NO_SECOND));
             proxyList.add(proxy);
 
         });
@@ -102,7 +109,7 @@ public class XiCiProxyProcessor implements PageProcessor {
     private List<Proxy> checkProxyLive(List<Proxy> proxyList) {
         List<Proxy> proxyLiveList = new ArrayList<>();
         proxyList.forEach(proxy -> {
-            Boolean isOk = ProxyUtils.checkProxyIp(proxy, Constants.MAFENGWO_HOST_URL);
+            Boolean isOk = ProxyUtils.checkProxyIp(proxy, MAFENGWO_HOST_URL);
             if (isOk) {
                 proxyLiveList.add(proxy);
             }
@@ -120,6 +127,6 @@ public class XiCiProxyProcessor implements PageProcessor {
     public void start(PageProcessor pageProcessor, String url) {
 
         Spider.create(pageProcessor)
-                .addUrl(url).thread(Constants.THREAD_DEFAULT_NUM).run();
+            .addUrl(url).thread(THREAD_DEFAULT_NUM).run();
     }
 }

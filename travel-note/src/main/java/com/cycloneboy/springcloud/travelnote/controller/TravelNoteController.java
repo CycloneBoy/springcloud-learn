@@ -3,12 +3,14 @@ package com.cycloneboy.springcloud.travelnote.controller;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.cycloneboy.springcloud.common.domain.BaseResponse;
+import com.cycloneboy.springcloud.common.entity.TravelNote;
+import com.cycloneboy.springcloud.common.entity.TravelNoteDetail;
 import com.cycloneboy.springcloud.travelnote.common.Constants;
 import com.cycloneboy.springcloud.travelnote.domain.Note.AuthorAndNoteList;
 import com.cycloneboy.springcloud.travelnote.domain.TravelImageRequest;
 import com.cycloneboy.springcloud.travelnote.entity.NoteAuthor;
-import com.cycloneboy.springcloud.travelnote.entity.TravelNote;
-import com.cycloneboy.springcloud.travelnote.entity.TravelNoteDetail;
+import com.cycloneboy.springcloud.travelnote.kafka.TravelNoteDetailSenderService;
 import com.cycloneboy.springcloud.travelnote.processor.ImageInfoProcessor;
 import com.cycloneboy.springcloud.travelnote.processor.NoteListProcessor;
 import com.cycloneboy.springcloud.travelnote.processor.TravelImageProcessor;
@@ -56,13 +58,27 @@ public class TravelNoteController {
     @Autowired
     private TravelImageProcessor travelImageProcessor;
 
+    @Autowired
+    private TravelNoteDetailSenderService travelNoteDetailSenderService;
 
+
+    /**
+     * 爬去每一年的蜂首游记（历历在目）,热门游记那一年的365篇游记
+     *
+     * @param url 历历在目游记列表链接： http://www.mafengwo.cn/app/calendar.php?year=2019
+     * @return
+     */
     @GetMapping("/crawlnote")
     public String startCrawlTravel(@RequestParam(name = "url") String url) {
         noteListProcessor.start(noteListProcessor, url);
         return "startCrawlTravel is close!";
     }
 
+    /**
+     * 爬取2019 -2010 年的蜂首游记（历历在目）,热门游记那一年的365篇游记
+     * http://www.mafengwo.cn/app/calendar.php?year=2019
+     * @return
+     */
     @GetMapping("/crawlnote/all")
     public String startCrawlTravelAll() {
         String url;
@@ -80,13 +96,21 @@ public class TravelNoteController {
         return "startCrawlTravelNote is close!";
     }
 
+    /**
+     * 爬取游记信息
+     * @param url  游记链接： http://www.mafengwo.cn/i/11895202.html
+     * @return
+     * @throws IOException
+     */
     @GetMapping("/notebyurl")
-    public String startCrawlNote(@RequestParam(name = "url") String url) throws IOException {
+    public BaseResponse startCrawlNote(@RequestParam(name = "url") String url) throws IOException {
         String html = CrawelUtils.getHtmlFromUrl(url);
 
         TravelNoteDetail travelNoteDetail = CrawelUtils.extractNoteHtml(html);
+        travelNoteDetailSenderService.send(travelNoteDetail);
         travelNoteDetailService.save(travelNoteDetail);
-        return html;
+
+        return new BaseResponse(travelNoteDetail);
     }
 
 

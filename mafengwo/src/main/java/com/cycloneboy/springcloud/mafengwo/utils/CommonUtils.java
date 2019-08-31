@@ -2,8 +2,8 @@ package com.cycloneboy.springcloud.mafengwo.utils;
 
 import static com.cycloneboy.springcloud.common.common.Constants.FILE_IMAGE_DESTINATION_DIR;
 
+import com.cycloneboy.springcloud.common.entity.TravelImage;
 import com.cycloneboy.springcloud.common.utils.download.DownloadFileWithThreadPool;
-import com.cycloneboy.springcloud.mafengwo.entity.TravelImage;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;

@@ -21,7 +21,13 @@ spring:
       username: admin
       password: admin
       fail-fast: true
-
+    stream:
+      default-binder: kafka
+      bindings:
+        travel-note-save:
+          destination: travel-note-save
+        travel-note-detail-save:
+          destination: travel-note-detail-save
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -82,7 +88,7 @@ mybatis-plus:
   # 如果是放在resource目录 classpath:/mapper/*Mapper.xml
   mapper-locations: classpath:mapper/*.xml
   #实体扫描，多个package用逗号或者分号分隔
-  typeAliasesPackage: com.cycloneboy.springcloud.travelnote.entity
+  typeAliasesPackage: com.cycloneboy.springcloud.travelnote.entity;com.cycloneboy.springcloud.common.entity
   configuration:
     #配置返回数据库(column下划线命名&&返回java实体是驼峰命名)，自动匹配无需as（没开启这个，SQL需要写as： select user_id as userId）
     map-underscore-to-camel-case: true  #使用驼峰法映射属性

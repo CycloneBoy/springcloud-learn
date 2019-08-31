@@ -1,9 +1,11 @@
 package com.cycloneboy.springcloud.travelnote.processor;
 
+import com.cycloneboy.springcloud.common.entity.TravelNote;
 import com.cycloneboy.springcloud.travelnote.common.Constants;
-import com.cycloneboy.springcloud.travelnote.entity.TravelNote;
+import com.cycloneboy.springcloud.travelnote.kafka.TravelNoteSenderService;
 import com.cycloneboy.springcloud.travelnote.service.TravelNoteService;
 import com.cycloneboy.springcloud.travelnote.utils.CrawelUtils;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -27,6 +29,9 @@ import us.codecraft.webmagic.selector.Selectable;
 public class NoteListProcessor implements PageProcessor {
 
 
+    @Autowired
+    private TravelNoteSenderService travelNoteSenderService;
+
     /**
      * 设置站点信息
      */
@@ -43,7 +48,7 @@ public class NoteListProcessor implements PageProcessor {
         selectableList.forEach(selectable -> {
             int year = Integer.parseInt(selectable.xpath("//em[@class='cur-year']/text()").toString());
             int month = Integer.parseInt(selectable.xpath("//em[@class='cur-month']/text()").toString());
-            log.info("爬取：" + year + " - " + month);
+            log.info("爬取年份-月份：{} - {}", year, month);
 
             // 提取游记列表
             List<Selectable> noteSelectableList = selectable.xpath("//li[@class='_j_hover']").nodes();
@@ -67,16 +72,18 @@ public class NoteListProcessor implements PageProcessor {
                 travelNote.setAuthorUrl(authorUrl);
                 travelNote.setAuthorImageUrl(authorImageUrl);
                 travelNote.setAuthorName(authorName);
+                travelNote.setCreateTime(LocalDateTime.now());
                 travelNoteList.add(travelNote);
             });
 
 
         });
 
-        log.info("总共抓取条数： " + travelNoteList.size() + " ,from " + page.getRequest().getUrl());
-//        travelNoteList.forEach(note -> {
+        log.info("总共抓取游记条数： {} from {} ", travelNoteList.size(), page.getRequest().getUrl());
+        travelNoteList.forEach(note -> {
+            travelNoteSenderService.send(note);
 //            log.info(note.toString());
-//        });
+        });
 
 //        travelNoteService.saveBatch(travelNoteList, 50);
     }

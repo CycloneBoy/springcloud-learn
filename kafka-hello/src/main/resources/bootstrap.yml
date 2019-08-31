@@ -13,17 +13,18 @@ spring:
   application:
     name: kafka-hello  #全部小写
   cloud:
-    config:
-      discovery:
-        enabled: true
-        service-id: config-server
-      profile: dev
-      label: master
-      #      uri: http://localhost:9060/
-      username: admin
-      password: admin
-      fail-fast: true
+    #    config:
+    #      discovery:
+    #        enabled: true
+    #        service-id: config-server
+    #      profile: dev
+    #      label: master
+    #      #      uri: http://localhost:9060/
+    #      username: admin
+    #      password: admin
+    #      fail-fast: true
     stream:
+      default-binder: kafka
       bindings:
         greetings-in:
           destination: greetings
@@ -31,13 +32,17 @@ spring:
         greetings-out:
           destination: greetings
           contentType: application/json
-
         travel-image-output:
-          destination: travel-image
-          contentType: application/json
-        travel-image-input:
-          destination: travel-image
-          contentType: application/json
+          destination: travel-image-send
+          group: travel-image-send
+        travel-note-output:
+          destination: travel-note-save
+          group: travel-note-output
+        travel-note-detail-output:
+          destination: travel-note-detail-save
+          group: travel-note-detail-output
+
+
 management:
   endpoints:
     web:

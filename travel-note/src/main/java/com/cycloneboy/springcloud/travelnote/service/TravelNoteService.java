@@ -2,8 +2,7 @@ package com.cycloneboy.springcloud.travelnote.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.cycloneboy.springcloud.travelnote.entity.TravelNote;
-import org.springframework.stereotype.Service;
+import com.cycloneboy.springcloud.common.entity.TravelNote;
 
 /**
  * <p>
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
  * @author cycloneboy
  * @since 2019-08-02
  */
-@Service
 public interface TravelNoteService extends IService<TravelNote> {
 
 }

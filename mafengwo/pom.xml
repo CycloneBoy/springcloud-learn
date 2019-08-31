@@ -21,10 +21,10 @@
             <artifactId>common</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.cycloneboy.springcloud</groupId>
-            <artifactId>mafengwo-service-api</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.cycloneboy.springcloud</groupId>-->
+<!--            <artifactId>mafengwo-service-api</artifactId>-->
+<!--        </dependency>-->
 
         <!-- spring cloud -->
         <dependency>

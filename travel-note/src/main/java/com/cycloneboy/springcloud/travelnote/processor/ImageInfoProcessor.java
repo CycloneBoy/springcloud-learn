@@ -1,9 +1,9 @@
 package com.cycloneboy.springcloud.travelnote.processor;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.cycloneboy.springcloud.common.entity.TravelImage;
 import com.cycloneboy.springcloud.travelnote.domain.ImageInfoRequest;
 import com.cycloneboy.springcloud.travelnote.domain.PhotoInfo;
-import com.cycloneboy.springcloud.travelnote.entity.TravelImage;
 import com.cycloneboy.springcloud.travelnote.service.TravelImageService;
 import com.cycloneboy.springcloud.travelnote.utils.CommonUtils;
 import com.cycloneboy.springcloud.travelnote.utils.CrawelUtils;

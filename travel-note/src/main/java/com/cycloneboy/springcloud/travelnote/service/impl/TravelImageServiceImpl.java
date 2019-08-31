@@ -1,8 +1,8 @@
 package com.cycloneboy.springcloud.travelnote.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.cycloneboy.springcloud.common.entity.TravelImage;
 import com.cycloneboy.springcloud.travelnote.dao.TravelImageMapper;
-import com.cycloneboy.springcloud.travelnote.entity.TravelImage;
 import com.cycloneboy.springcloud.travelnote.service.TravelImageService;
 import org.springframework.stereotype.Service;
 

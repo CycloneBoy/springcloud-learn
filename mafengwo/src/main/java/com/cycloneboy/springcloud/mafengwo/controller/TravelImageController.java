@@ -3,7 +3,7 @@ package com.cycloneboy.springcloud.mafengwo.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cycloneboy.springcloud.common.domain.BaseResponse;
 import com.cycloneboy.springcloud.common.domain.PageResponse;
-import com.cycloneboy.springcloud.mafengwo.entity.TravelImage;
+import com.cycloneboy.springcloud.common.entity.TravelImage;
 import com.cycloneboy.springcloud.mafengwo.service.TravelImageSenderService;
 import com.cycloneboy.springcloud.mafengwo.service.TravelImageService;
 import com.cycloneboy.springcloud.mafengwo.utils.CommonUtils;

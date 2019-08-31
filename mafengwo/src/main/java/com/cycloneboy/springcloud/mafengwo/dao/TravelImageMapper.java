@@ -1,7 +1,7 @@
 package com.cycloneboy.springcloud.mafengwo.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.cycloneboy.springcloud.mafengwo.entity.TravelImage;
+import com.cycloneboy.springcloud.common.entity.TravelImage;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

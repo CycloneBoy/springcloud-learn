@@ -1,7 +1,7 @@
 package com.cycloneboy.springcloud.travelnote.processor;
 
+import com.cycloneboy.springcloud.common.entity.TravelNoteDetail;
 import com.cycloneboy.springcloud.travelnote.common.Constants;
-import com.cycloneboy.springcloud.travelnote.entity.TravelNoteDetail;
 import com.cycloneboy.springcloud.travelnote.service.TravelNoteDetailService;
 import com.cycloneboy.springcloud.travelnote.service.TravelNoteService;
 import com.cycloneboy.springcloud.travelnote.utils.CrawelUtils;
@@ -47,8 +47,6 @@ public class TravelNoteProcessor implements PageProcessor {
     @Override
     public void process(Page page) {
         WebDriver driver = CrawelUtils.getPhantomJSDriver();
-        driver.get(page.getRequest().getUrl());
-
         driver.get(page.getRequest().getUrl());
 
         WebDriverWait wait = new WebDriverWait(driver, 10);

@@ -1,8 +1,8 @@
 package com.cycloneboy.springcloud.mafengwo.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.cycloneboy.springcloud.common.entity.TravelImage;
 import com.cycloneboy.springcloud.mafengwo.dao.TravelImageMapper;
-import com.cycloneboy.springcloud.mafengwo.entity.TravelImage;
 import com.cycloneboy.springcloud.mafengwo.service.TravelImageService;
 import org.springframework.stereotype.Service;
 

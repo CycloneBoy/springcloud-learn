@@ -2,9 +2,9 @@ package com.cycloneboy.springcloud.travelnote.controller;
 
 
 import com.cycloneboy.springcloud.common.domain.BaseResponse;
+import com.cycloneboy.springcloud.common.entity.TravelImage;
 import com.cycloneboy.springcloud.travelnote.domain.ImageInfoRequest;
 import com.cycloneboy.springcloud.travelnote.domain.TravelImageRequest;
-import com.cycloneboy.springcloud.travelnote.entity.TravelImage;
 import com.cycloneboy.springcloud.travelnote.processor.ImageInfoProcessor;
 import com.cycloneboy.springcloud.travelnote.processor.TravelImageProcessor;
 import com.cycloneboy.springcloud.travelnote.service.TravelImageService;
