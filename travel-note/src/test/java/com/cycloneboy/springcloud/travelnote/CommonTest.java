@@ -112,4 +112,6 @@ public class CommonTest {
         double speed = Double.parseDouble(speedStr.substring(0, speedStr.lastIndexOf(SECOND_CN)));
         log.info("速度:" + speedStr + " - " + speed);
     }
+
+
 }

@@ -2,6 +2,7 @@ package com.cycloneboy.springcloud.travelnote.processor;
 
 import com.cycloneboy.springcloud.common.entity.TravelNoteDetail;
 import com.cycloneboy.springcloud.travelnote.common.Constants;
+import com.cycloneboy.springcloud.travelnote.domain.Note.AuthorAndNoteList;
 import com.cycloneboy.springcloud.travelnote.service.TravelNoteDetailService;
 import com.cycloneboy.springcloud.travelnote.service.TravelNoteService;
 import com.cycloneboy.springcloud.travelnote.utils.CrawelUtils;
@@ -66,7 +67,8 @@ public class TravelNoteProcessor implements PageProcessor {
 
         log.info(str);
         log.info(driver.getPageSource());
-        TravelNoteDetail travelNoteDetail = CrawelUtils.extractNoteHtml(str);
+        AuthorAndNoteList authorAndNoteList = CrawelUtils.extractNoteHtml(str);
+        TravelNoteDetail travelNoteDetail = authorAndNoteList.getTravelNoteDetailList().get(0);
         travelNoteDetailService.save(travelNoteDetail);
 
 

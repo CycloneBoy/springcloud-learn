@@ -107,4 +107,38 @@ public class CommonUtils {
         return time == null ? 1000.0f : Float.parseFloat(time.substring(0, time.lastIndexOf(SECOND_CN)));
     }
 
+    /**
+     * 根据作者ID返回作者home首页链接
+     *
+     * @param authorId 作者ID
+     * @return 作者home首页链接
+     */
+    public static String buildTravelAuthorUrl(Long authorId) {
+        return "http://www.mafengwo.cn/u/" + authorId + "/note.html";
+    }
+
+    /**
+     * 根据作者ID返回作者home首页链接
+     *
+     * @param url 作者游记主页  http://www.mafengwo.cn/u/74369556.html http://www.mafengwo.cn/u/74369556/note.html
+     * @return 作者home首页链接
+     */
+    public static String buildTravelAuthorUrl(String url) {
+        if (url != null && url.contains("/note.html")) {
+            return url;
+        }
+        url = url != null ? url.replace(".html", "/note.html") : "";
+        return url;
+    }
+
+    /**
+     * 根据游记目的地ID 和 游记ID 返回 游记图片列表 链接
+     *
+     * @param destinationId 游记目的地ID
+     * @param noteId        游记ID
+     * @return 游记图片列表 链接
+     */
+    public static String buildTravelNoteImageUrl(Integer destinationId, Integer noteId) {
+        return "http://www.mafengwo.cn/photo/" + destinationId + "/scenery_" + noteId + "_1.html";
+    }
 }

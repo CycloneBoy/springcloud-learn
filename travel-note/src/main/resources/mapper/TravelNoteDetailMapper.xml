@@ -28,13 +28,15 @@
         <result column="travel_people" property="travelPeople" />
         <result column="travel_cost" property="travelCost" />
         <result column="status" property="status" />
+        <result column="destination_large" property="destinationLarge"/>
+        <result column="note_month" property="noteMonth"/>
         <result column="crawl_time" property="crawlTime" />
         <result column="create_datetime" property="createDatetime" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, uid, author_id, note_id, destination_id, url, note_name, content, short_content,image_url, view_count, comment_count, up_count, collect_count, share_count, word_count, image_count, help_people_count, destination, travel_time, travel_day, travel_people, travel_cost, status, crawl_time, create_datetime
+        id, uid, author_id, note_id, destination_id, url, note_name, content, short_content,image_url, view_count, comment_count, up_count, collect_count, share_count, word_count, image_count, help_people_count, destination, travel_time, travel_day, travel_people, travel_cost, status,destination_large,note_month, crawl_time, create_datetime
     </sql>
 
 </mapper>

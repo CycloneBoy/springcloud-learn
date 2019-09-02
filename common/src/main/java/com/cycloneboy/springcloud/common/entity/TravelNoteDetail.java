@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -148,14 +148,24 @@ public class TravelNoteDetail extends Model<TravelNoteDetail> {
     private Integer status;
 
     /**
+     * 游记目的地大
+     */
+    private String destinationLarge;
+
+    /**
+     * 游记月份
+     */
+    private String noteMonth;
+
+    /**
      * 爬取时间
      */
-    private LocalDateTime crawlTime;
+    private Date crawlTime;
 
     /**
      * 创建时间
      */
-    private LocalDateTime createDatetime;
+    private Date createDatetime;
 
 
     @Override

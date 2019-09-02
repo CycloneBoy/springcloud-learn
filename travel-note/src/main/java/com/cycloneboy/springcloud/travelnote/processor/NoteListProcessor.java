@@ -5,8 +5,8 @@ import com.cycloneboy.springcloud.travelnote.common.Constants;
 import com.cycloneboy.springcloud.travelnote.kafka.TravelNoteSenderService;
 import com.cycloneboy.springcloud.travelnote.service.TravelNoteService;
 import com.cycloneboy.springcloud.travelnote.utils.CrawelUtils;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
@@ -72,7 +72,7 @@ public class NoteListProcessor implements PageProcessor {
                 travelNote.setAuthorUrl(authorUrl);
                 travelNote.setAuthorImageUrl(authorImageUrl);
                 travelNote.setAuthorName(authorName);
-                travelNote.setCreateTime(LocalDateTime.now());
+                travelNote.setCreateTime(new Date());
                 travelNoteList.add(travelNote);
             });
 

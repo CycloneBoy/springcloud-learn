@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -80,7 +80,7 @@ public class TravelNote extends Model<TravelNote> {
   /**
    * 创建时间
    */
-  private LocalDateTime createTime;
+  private Date createTime;
 
 
   @Override

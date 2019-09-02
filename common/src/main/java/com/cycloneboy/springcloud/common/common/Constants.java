@@ -49,10 +49,13 @@ public class Constants {
     public static final String KAFKA_SENDER_TRAVEL_NOTE_OUTPUT = "travel-note-output";
     public static final String KAFKA_SENDER_TRAVEL_NOTE_SAVE = "travel-note-save";
 
-    // 热门游记
+    // 热门游记详情
     public static final String KAFKA_SENDER_TRAVEL_NOTE_DETAIL_OUTPUT = "travel-note-detail-output";
     public static final String KAFKA_SENDER_TRAVEL_NOTE_DETAIL_SAVE = "travel-note-detail-save";
 
+    // 游记作者
+    public static final String KAFKA_SENDER_TRAVEL_AUTHOR_OUTPUT = "travel-note-author-output";
+    public static final String KAFKA_SENDER_TRAVEL_AUTHOR_SAVE = "travel-note-author-save";
 
     //测试图片1
     public static final String IMAGE_URL_1 = "http://p4-q.mafengwo.net/s14/M00/9B/43/wKgE2l0hhqOAAQg8AAkz36AHSzE097.jpg";
@@ -71,4 +74,9 @@ public class Constants {
             IMAGE_URL_6, IMAGE_URL_7, IMAGE_URL_8, IMAGE_URL_9, IMAGE_URL_10);
     //下载图片的开启的线程数
     public static final int DEFAULT_THREAD_NUM = 1;
+
+    // 历历在目的首页链接
+    public static final String TRAVEL_NOTE_LIST_BY_YEAR_URL = "http://www.mafengwo.cn/app/calendar.php?year=";
+
+
 }

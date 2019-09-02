@@ -49,7 +49,7 @@ public class TravelAuthorController {
     }
 
     @GetMapping("/note/author")
-    public String startCrawlAuthorNote(@RequestParam(name = "url") String url) throws IOException {
+    public String startCrawlAuthorNote(@RequestParam(name = "url") String url) {
         String html = CrawelUtils.getHtmlFromUrl(url);
         AuthorAndNoteList authorAndNoteList = CrawelUtils.extractAuthorNoteList(html);
 

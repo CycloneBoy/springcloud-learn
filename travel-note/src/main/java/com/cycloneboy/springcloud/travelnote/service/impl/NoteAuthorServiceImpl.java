@@ -1,8 +1,8 @@
 package com.cycloneboy.springcloud.travelnote.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.cycloneboy.springcloud.common.entity.NoteAuthor;
 import com.cycloneboy.springcloud.travelnote.dao.NoteAuthorMapper;
-import com.cycloneboy.springcloud.travelnote.entity.NoteAuthor;
 import com.cycloneboy.springcloud.travelnote.service.NoteAuthorService;
 import org.springframework.stereotype.Service;
 

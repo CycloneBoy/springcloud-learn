@@ -1,4 +1,4 @@
-package com.cycloneboy.springcloud.travelnote.entity;
+package com.cycloneboy.springcloud.common.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;

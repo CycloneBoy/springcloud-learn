@@ -1,7 +1,7 @@
 package com.cycloneboy.springcloud.travelnote.domain.Note;
 
+import com.cycloneboy.springcloud.common.entity.NoteAuthor;
 import com.cycloneboy.springcloud.common.entity.TravelNoteDetail;
-import com.cycloneboy.springcloud.travelnote.entity.NoteAuthor;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;

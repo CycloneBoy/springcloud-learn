@@ -2,16 +2,18 @@ package com.cycloneboy.springcloud.travelnote.utils;
 
 import static com.cycloneboy.springcloud.travelnote.common.Constants.MAFENGWO_PHOTO_SCENERY_URL_REGEX;
 
+import com.cycloneboy.springcloud.common.entity.NoteAuthor;
 import com.cycloneboy.springcloud.common.entity.TravelNoteDetail;
 import com.cycloneboy.springcloud.travelnote.domain.Note.AuthorAndNoteList;
-import com.cycloneboy.springcloud.travelnote.entity.NoteAuthor;
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriverService;
@@ -83,10 +85,15 @@ public class CrawelUtils {
     public static WebDriver getChromeDriver() throws IOException {
 //        System.setProperty("webdriver.chrome.driver", "C:/Users/sunlc/AppData/Local/Google/Chrome/Application/chrome.exe");
         // 创建一个 ChromeDriver 的接口，用于连接 Chrome（chromedriver.exe 的路径可以任意放置，只要在newFile（）的时候写入你放的路径即可）
+        DesiredCapabilities sCaps = new DesiredCapabilities();
+        sCaps.setJavascriptEnabled(true);
+
         service = new ChromeDriverService.Builder()
+            .withSilent(true)
                 .usingDriverExecutable(new File("/usr/local/bin/chromedriver"))
                 .usingAnyFreePort()
-                .build();
+
+            .build();
         service.start();
         // 创建一个 Chrome 的浏览器实例
         return new RemoteWebDriver(service.getUrl(), DesiredCapabilities.chrome());
@@ -112,19 +119,28 @@ public class CrawelUtils {
     }
 
 
-    public static String getHtmlFromUrl(String url) throws IOException {
-        WebDriver driver = getChromeDriver();
+    /**
+     * 通过Chronme 浏览器获取网页源码,然后返回
+     *
+     * @param url 页面链接
+     * @return 网页源码
+     */
+    public static String getHtmlFromUrl(String url) {
+        WebDriver driver = null;
+        try {
+            driver = getChromeDriver();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
 
         // 让浏览器访问 Baidu
         driver.get(url);
-//        driver.get("http://www.mafengwo.cn/u/75334068/note.html");
-//        driver.get("https://www.baidu.com/");
-//        driver.get("http://www.mafengwo.cn");
 
         // 用下面代码也可以实现
 //        driver.navigate().to("http://www.baidu.com");
         // 获取 网页的 title
-        System.out.println(" Page title is: " + driver.getTitle());
+        log.info(" Page title is: " + driver.getTitle());
         // 通过 id 找到 input 的 DOM
         WebElement element = driver.findElement(By.xpath("/html"));
         log.info(element.getAttribute("outerHTML"));
@@ -133,18 +149,29 @@ public class CrawelUtils {
         element.sendKeys("东鹏瓷砖");
         // 提交 input 所在的 form
         log.info(element.getText());
+
         // 通过判断 title 内容等待搜索页面加载完毕，间隔秒
         WebDriverWait wait = new WebDriverWait(driver, 10);
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div")));
 
+        WebElement until = wait
+            .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div")));
 
-        // 显示搜索结果页面的 title
-        log.info(" Page title is: " + driver.getTitle());
+        // 实现页面滚动到底加载
+        // TODO: 优化页面滚动加载
+        for (int i = 0; i < 5; i++) {
+
+            ((JavascriptExecutor) driver)
+                .executeScript("window.scrollTo(0,document.body.scrollHeight)");
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
         String pageDate = driver.getPageSource();
         //        log.info(pageDate);
-        log.info("页面抓取完毕：" + url);
-//        log.info(pageDate);
+        log.info("页面抓取完毕：{} -> {}", url, driver.getTitle());
 
         // 关闭浏览器
         driver.quit();
@@ -196,16 +223,42 @@ public class CrawelUtils {
      *
      * @param pageSource
      */
-    public static TravelNoteDetail extractNoteHtml(String pageSource) {
+    public static AuthorAndNoteList extractNoteHtml(String pageSource) {
         Html html = new Html(pageSource);
 
+        AuthorAndNoteList authorAndNoteList = new AuthorAndNoteList();
+
+        // 作者信息
         String authorUrl = html.xpath("//div[@class='person']/a[@class='per_pic']/@href").toString();
+        String authorImageUrl = html.xpath("//div[@class='person']/a[@class='per_pic']/img/@src")
+            .toString();
+
+        String authorName = html.xpath("//a[@class='per_name']/text()").toString();
+
+        String authorLevel = html.xpath("//a[@class='per_grade']/text()").toString();
+
+        NoteAuthor noteAuthor = new NoteAuthor();
+        noteAuthor.setUrl(authorUrl);
+        noteAuthor.setUid(Long.parseLong(authorUrl.substring(3, authorUrl.lastIndexOf("."))));
+        noteAuthor.setName(authorName.substring(0, authorName.lastIndexOf("(")));
+        noteAuthor.setCity(
+            authorName.substring(authorName.lastIndexOf("(") + 1, authorName.lastIndexOf(")")));
+        noteAuthor.setLevel(authorLevel.substring(3));
+        noteAuthor.setImageUrl(authorImageUrl);
+        authorAndNoteList.setNoteAuthor(noteAuthor);
+
+        // 游记信息
+        String noteImageUrl = html
+            .xpath("//div[@class='set_bg _j_load_cover']/img/@src").toString();
 
         String noteName = html.xpath("//div[@class='view_info']/div[@class='vi_con']/h1/text()").toString();
         String upNumber = html.xpath("//div[@class='ding _j_ding_father']/div/text()").toString();
         String noteId = html.xpath("//div[@class='ding _j_ding_father']/a/@data-iid").toString();
 
-        String content = html.xpath("//div[@class='_j_content_box']/tidyText()").toString().trim().replace(" ", "");
+        String content = html.xpath("//div[@class='_j_content_box']/tidyText()").toString()
+            .trim().replace(" ", "")
+            .replace("<>", "")
+            .replace("\n\n", "\n");
 
         String vcTime = html.xpath("//div[@class='vc_time']/span[@class='time']/text()").toString();
         String viewAndCommentCount = html.xpath("//div[@class='vc_time']/span[2]/text()").toString();
@@ -231,13 +284,17 @@ public class CrawelUtils {
 
         String imageUrl = imageList.get(0);
         String cityId = imageUrl.substring("/photo/".length(), imageUrl.lastIndexOf("/scenery"));
-        log.info("城市ID：" + cityId);
+//        log.info("城市ID：" + cityId);
 
         TravelNoteDetail travelNoteDetail = new TravelNoteDetail();
 
         travelNoteDetail.setDestinationId(Integer.parseInt(cityId));
         try {
-            travelNoteDetail.setUid(Long.parseLong(authorUrl.substring(3, authorUrl.lastIndexOf("."))));
+            if (authorUrl != null) {
+                travelNoteDetail
+                    .setUid(Long.parseLong(authorUrl.substring(3, authorUrl.lastIndexOf("."))));
+            }
+
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
@@ -287,8 +344,10 @@ public class CrawelUtils {
         }
 
         travelNoteDetail.setStatus(1);
-        travelNoteDetail.setCrawlTime(LocalDateTime.now());
+        travelNoteDetail.setCrawlTime(new Date());
+        travelNoteDetail.setImageUrl(noteImageUrl);
 
+        authorAndNoteList.setTravelNoteDetailList(Arrays.asList(travelNoteDetail));
 //        log.info(noteName);
 //        log.info(upNumber);
 //        log.info(content);
@@ -306,15 +365,15 @@ public class CrawelUtils {
 //        log.info(travelPeople);
 //        log.info(travelCost);
 
-        log.info("travelNoteDetail： " + travelNoteDetail.toString());
+//        log.info("travelNoteDetail： " + travelNoteDetail.toString());
 
-        return travelNoteDetail;
+        return authorAndNoteList;
     }
 
     /**
      * 从个人主页提取游记列表
      *
-     * @param pageSource
+     * @param pageSource 作者个人主页的html 页面
      */
     public static AuthorAndNoteList extractAuthorNoteList(String pageSource) {
         Html html = new Html(pageSource);
@@ -396,6 +455,10 @@ public class CrawelUtils {
             travelNoteDetail.setShortContent(noteContent);
             travelNoteDetail.setTravelTime(noteDate);
             travelNoteDetail.setStatus(0);
+            travelNoteDetail.setCreateDatetime(new Date());
+            travelNoteDetail.setDestinationLarge(destinationLarge);
+            travelNoteDetail.setNoteMonth(
+                noteMonth != null ? noteMonth.substring(noteMonth.lastIndexOf("月")) : "0");
 
             travelNoteDetailList.add(travelNoteDetail);
 

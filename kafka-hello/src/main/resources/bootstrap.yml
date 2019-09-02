@@ -41,6 +41,9 @@ spring:
         travel-note-detail-output:
           destination: travel-note-detail-save
           group: travel-note-detail-output
+        travel-note-author-output:
+          destination: travel-note-author-save
+          group: travel-note-author-output
 
 
 management:

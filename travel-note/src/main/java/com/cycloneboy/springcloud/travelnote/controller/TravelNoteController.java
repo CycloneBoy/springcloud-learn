@@ -1,29 +1,23 @@
 package com.cycloneboy.springcloud.travelnote.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import static com.cycloneboy.springcloud.common.common.Constants.TRAVEL_NOTE_LIST_BY_YEAR_URL;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cycloneboy.springcloud.common.domain.BaseResponse;
 import com.cycloneboy.springcloud.common.entity.TravelNote;
-import com.cycloneboy.springcloud.common.entity.TravelNoteDetail;
 import com.cycloneboy.springcloud.travelnote.common.Constants;
 import com.cycloneboy.springcloud.travelnote.domain.Note.AuthorAndNoteList;
-import com.cycloneboy.springcloud.travelnote.domain.TravelImageRequest;
-import com.cycloneboy.springcloud.travelnote.entity.NoteAuthor;
-import com.cycloneboy.springcloud.travelnote.kafka.TravelNoteDetailSenderService;
-import com.cycloneboy.springcloud.travelnote.processor.ImageInfoProcessor;
 import com.cycloneboy.springcloud.travelnote.processor.NoteListProcessor;
-import com.cycloneboy.springcloud.travelnote.processor.TravelImageProcessor;
 import com.cycloneboy.springcloud.travelnote.processor.TravelNoteProcessor;
-import com.cycloneboy.springcloud.travelnote.service.NoteAuthorService;
-import com.cycloneboy.springcloud.travelnote.service.TravelNoteDetailService;
 import com.cycloneboy.springcloud.travelnote.service.TravelNoteService;
-import com.cycloneboy.springcloud.travelnote.utils.CrawelUtils;
+import com.cycloneboy.springcloud.travelnote.service.crawl.TravelCrawlService;
+import com.cycloneboy.springcloud.travelnote.utils.CommonUtils;
 import java.io.IOException;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,7 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TravelNoteController {
 
-    private String TravelNoteListUrl = "http://www.mafengwo.cn/app/calendar.php?year=";
 
     @Autowired
     private NoteListProcessor noteListProcessor;
@@ -43,35 +36,20 @@ public class TravelNoteController {
     private TravelNoteProcessor travelNoteProcessor;
 
     @Autowired
-    private TravelNoteDetailService travelNoteDetailService;
-
-    @Autowired
     private TravelNoteService travelNoteService;
 
     @Autowired
-    private NoteAuthorService noteAuthorService;
-
-    @Autowired
-    private ImageInfoProcessor imageInfoProcessor;
-
-
-    @Autowired
-    private TravelImageProcessor travelImageProcessor;
-
-    @Autowired
-    private TravelNoteDetailSenderService travelNoteDetailSenderService;
-
-
+    private TravelCrawlService travelCrawlService;
     /**
-     * 爬去每一年的蜂首游记（历历在目）,热门游记那一年的365篇游记
+     * 爬取每一年的蜂首游记（历历在目）,热门游记那一年的365篇游记
      *
      * @param url 历历在目游记列表链接： http://www.mafengwo.cn/app/calendar.php?year=2019
      * @return
      */
     @GetMapping("/crawlnote")
-    public String startCrawlTravel(@RequestParam(name = "url") String url) {
+    public BaseResponse startCrawlTravel(@RequestParam(name = "url") String url) {
         noteListProcessor.start(noteListProcessor, url);
-        return "startCrawlTravel is close!";
+        return new BaseResponse("startCrawlTravel is close!");
     }
 
     /**
@@ -80,206 +58,107 @@ public class TravelNoteController {
      * @return
      */
     @GetMapping("/crawlnote/all")
-    public String startCrawlTravelAll() {
+    public BaseResponse startCrawlTravelAll() {
         String url;
         for (int year = 2019; year >= 2010; year--) {
-            url = TravelNoteListUrl + year;
+            url = TRAVEL_NOTE_LIST_BY_YEAR_URL + year;
             noteListProcessor.start(noteListProcessor, url);
         }
 
-        return "startCrawlTravelAll is close!";
+        return new BaseResponse("startCrawlTravelAll is close!");
     }
 
     @GetMapping("/note")
-    public String startCrawlTravelNote(@RequestParam(name = "url") String url) {
+    public BaseResponse startCrawlTravelNote(@RequestParam(name = "url") String url) {
         travelNoteProcessor.start(travelNoteProcessor, url);
-        return "startCrawlTravelNote is close!";
+        return new BaseResponse("startCrawlTravelNote is close!");
     }
 
     /**
-     * 爬取游记信息
+     * 爬取游记详细信息
      * @param url  游记链接： http://www.mafengwo.cn/i/11895202.html
-     * @return
+     * @return 详细游记信息
      * @throws IOException
      */
     @GetMapping("/notebyurl")
-    public BaseResponse startCrawlNote(@RequestParam(name = "url") String url) throws IOException {
-        String html = CrawelUtils.getHtmlFromUrl(url);
-
-        TravelNoteDetail travelNoteDetail = CrawelUtils.extractNoteHtml(html);
-        travelNoteDetailSenderService.send(travelNoteDetail);
-        travelNoteDetailService.save(travelNoteDetail);
-
-        return new BaseResponse(travelNoteDetail);
+    public BaseResponse startCrawlNote(@RequestParam(name = "url") String url) {
+        return new BaseResponse(travelCrawlService.processTravelNoteDetail(url));
     }
 
 
+    /**
+     * 爬取游记详细信息 的热门游记的详细信息 爬取2019 -2010 年的蜂首游记（历历在目）,热门游记那一年的365篇游记
+     *
+     * @param year 年份
+     * @return 详细游记信息
+     */
     @GetMapping("/notebyurl/hot")
-    public String startCrawlHotNote(@RequestParam(name = "year") int year) throws IOException {
+    public BaseResponse startCrawlHotNote(@RequestParam(name = "year") int year) {
+        // 查询列表
         QueryWrapper<TravelNote> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(TravelNote::getYear, year);
         List<TravelNote> travelNoteList = travelNoteService.list(queryWrapper);
 
+        // 抓取列表
         for (TravelNote travelNote : travelNoteList) {
-            String html = null;
-            try {
-                html = CrawelUtils.getHtmlFromUrl(Constants.MAFENGWO_HOST_URL + travelNote.getUrl());
-                TravelNoteDetail travelNoteDetail = CrawelUtils.extractNoteHtml(html);
-                travelNoteDetailService.save(travelNoteDetail);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                log.info(travelNote.toString());
-            }
+            travelCrawlService
+                .processTravelNoteDetail(Constants.MAFENGWO_HOST_URL + travelNote.getUrl());
         }
 
-
-        return JSON.toJSONString(travelNoteList);
+        return new BaseResponse(travelNoteList);
     }
 
 
+    /**
+     *  爬取游记详细信息 的热门游记的详细信息 爬取2019 -2010 年的蜂首游记（历历在目
+     *  热门游记 ->
+     *              游记信息 + 基本作者信息
+     *              作者首页 ->  爬取作者信息 + 游记列表信息
+     *              游记列表信息 -> 游记详细信息 + 游记图片信息
+     * @param year 游记年份
+     * @param month 游记月份
+     * @param day 游记天数
+     * @return
+     */
     @GetMapping("/notebyurl/hot/savelist")
-    public String startCrawlHotNoteList(@RequestParam(name = "year") int year,
-                                        @RequestParam(name = "month") int month,
-                                        @RequestParam(name = "day") int day) throws IOException {
-        QueryWrapper<TravelNote> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(TravelNote::getYear, year);
+    public BaseResponse startCrawlHotNoteList(@RequestParam(name = "year") int year,
+        @RequestParam(name = "month") int month,
+        @RequestParam(name = "day") int day) {
 
-        if (month > 0) {
-            queryWrapper.lambda().eq(TravelNote::getMonth, month);
-        }
-
-        if (day > 0) {
-            queryWrapper.lambda().eq(TravelNote::getDay, day);
-        }
-
-        List<TravelNote> travelNoteList = travelNoteService.list(queryWrapper);
+        List<TravelNote> travelNoteList = travelNoteService.getNoteList(year, month, day);
 
         for (TravelNote travelNote : travelNoteList) {
-            String html = null;
-            try {
-                TravelNoteDetail travelNoteDetail = saveNoteDetail(travelNote.getUrl());
-
-                // 保存游记作者
-                AuthorAndNoteList authorAndNoteList = saveAuthorAndNoteList(travelNoteDetail.getUid());
-
-                // 保存作者那一页游记的信息和图片
-                log.info("保存作者那一页游记的信息和图片:" + authorAndNoteList.toString());
-                authorAndNoteList.getTravelNoteDetailList().forEach(travelNoteDetail1 -> {
-                    try {
-                        saveNoteDetail(travelNoteDetail1.getUrl());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                log.info(travelNote.toString());
-            }
+            AuthorAndNoteList authorAndNoteList = travelCrawlService
+                .processTravelNoteDetail(Constants.MAFENGWO_HOST_URL + travelNote.getUrl());
+            travelCrawlService.processTravelNoteAuthor(
+                CommonUtils.buildTravelAuthorUrl(authorAndNoteList.getNoteAuthor().getUid()));
         }
 
-
-        return JSON.toJSONString(travelNoteList);
+        return new BaseResponse(travelNoteList);
     }
 
+
     /**
-     * 保存热门游记列表
-     *
-     * @param hotNoteUrl
+     * 抓取游记作者的首页
+     * @param url 作者home链接
      * @return
-     * @throws IOException
      */
-    private TravelNoteDetail saveNoteDetail(String hotNoteUrl) throws IOException {
-        String url = Constants.MAFENGWO_HOST_URL + hotNoteUrl;
-        String html = CrawelUtils.getHtmlFromUrl(url);
-        TravelNoteDetail travelNoteDetail = CrawelUtils.extractNoteHtml(html);
-        saveTravelNoteDetail(travelNoteDetail);
-        log.info("保存热门游记信息：" + travelNoteDetail.toString());
-        // 保存热门游记的图片信息
-        saveNoteImage(travelNoteDetail.getDestinationId(), travelNoteDetail.getNoteId());
-        log.info("保存热门游记图片信息：" + travelNoteDetail.getImageCount());
-        return travelNoteDetail;
+    @GetMapping("/note/author/home")
+    public BaseResponse startCrawlAuthorHome(@RequestParam(name = "url") String url) {
+
+        return new BaseResponse(travelCrawlService.processTravelNoteAuthor(url));
     }
 
-    /**
-     * 保存游记
-     *
-     * @param travelNoteDetail
-     */
-    private void saveTravelNoteDetail(TravelNoteDetail travelNoteDetail) {
-
-        TravelNoteDetail travelNoteDetailOld = travelNoteDetailService.getOne(
-                new LambdaQueryWrapper<TravelNoteDetail>().eq(TravelNoteDetail::getNoteId, travelNoteDetail.getNoteId()));
-
-        if (travelNoteDetailOld != null) {
-//            BeanUtils.copyProperties(travelNoteDetailOld, travelNoteDetail);
-            travelNoteDetail.setId(travelNoteDetailOld.getId());
-            travelNoteDetail.setAuthorId(travelNoteDetailOld.getAuthorId());
-            travelNoteDetail.setShortContent(travelNoteDetailOld.getShortContent());
-            travelNoteDetail.setImageUrl(travelNoteDetailOld.getImageUrl());
-        }
-
-        travelNoteDetailService.saveOrUpdate(travelNoteDetail);
-        log.info("保存详细游记信息：" + travelNoteDetail.toString());
-    }
 
     /**
-     * 保存游记作者的信息和作者的第一页游记
-     *
-     * @param authorId http://www.mafengwo.cn/u/5328159.html
+     * 抓取游记作者的首页
+     * @param body 作者home链接
      * @return
-     * @throws IOException
      */
-    private AuthorAndNoteList saveAuthorAndNoteList(Long authorId) throws IOException {
-        String url = "http://www.mafengwo.cn/u/" + authorId + "/note.html";
-        String html = CrawelUtils.getHtmlFromUrl(url);
-        AuthorAndNoteList authorAndNoteList = CrawelUtils.extractAuthorNoteList(html);
+    @PostMapping("/note/author/home/html")
+    public BaseResponse startCrawlAuthorHomeByBody(String body) {
 
-        NoteAuthor noteAuthor = saveNoteAuthor(authorAndNoteList.getNoteAuthor());
-        log.info("保存作者信息：" + noteAuthor.toString());
-
-        List<TravelNoteDetail> travelNoteDetailList = authorAndNoteList.getTravelNoteDetailList();
-        travelNoteDetailList.forEach(travelNoteDetail -> {
-            travelNoteDetail.setAuthorId(noteAuthor.getId());
-            saveTravelNoteDetail(travelNoteDetail);
-            log.info("保存作者游记信息：" + travelNoteDetail.toString());
-        });
-
-
-//        travelNoteDetailService.saveOrUpdateBatch(travelNoteDetailList);
-
-        return authorAndNoteList;
+        return new BaseResponse(travelCrawlService.processTravelNoteAuthorByHtml(body));
     }
 
-    /**
-     * 保存作者游记
-     *
-     * @param noteAuthor
-     */
-    private NoteAuthor saveNoteAuthor(NoteAuthor noteAuthor) {
-        NoteAuthor noteAuthorOld = noteAuthorService.getOne(
-                new LambdaQueryWrapper<NoteAuthor>().eq(NoteAuthor::getUid, noteAuthor.getUid()));
-        if (noteAuthorOld == null) {
-            noteAuthorService.saveOrUpdate(noteAuthor);
-        }
-
-
-        return noteAuthor;
-    }
-
-
-    /**
-     * 保存热门游记的图片信息
-     */
-    private String saveNoteImage(Integer destinationId, Integer noteId) {
-        String url = "http://www.mafengwo.cn/photo/" + destinationId + "/scenery_" + noteId + "_1.html";
-        log.info("保存热门游记的图片信息:" + url);
-        TravelImageRequest request = new TravelImageRequest();
-        request.setNoteNumber(noteId.toString());
-        request.setDestinationNumber(destinationId.toString());
-
-        travelImageProcessor.start(travelImageProcessor, request);
-        return request.toString();
-    }
 }

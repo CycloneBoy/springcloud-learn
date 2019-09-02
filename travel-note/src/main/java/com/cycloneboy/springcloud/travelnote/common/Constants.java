@@ -26,4 +26,6 @@ public class Constants {
     public static final String MAFENGWO_HOST_URL = "http://www.mafengwo.cn";
 
     public static String MAFENGWO_PHOTO_SCENERY_URL_REGEX = ".*?/photo/.*?/scenery.*?/.*?.html";
+
+
 }

@@ -28,6 +28,10 @@ spring:
           destination: travel-note-save
         travel-note-detail-save:
           destination: travel-note-detail-save
+        travel-image-send:
+          destination: travel-image-send
+        travel-note-author-save:
+          destination: travel-note-author-save
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
