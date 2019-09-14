@@ -32,6 +32,7 @@
         <module>config-client</module>
         <module>kafka-hello</module>
         <module>travel-note</module>
+        <module>netty-learn</module>
     </modules>
 
     <properties>
