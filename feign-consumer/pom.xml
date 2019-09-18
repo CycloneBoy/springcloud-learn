@@ -23,6 +23,7 @@
         <dependency>
             <groupId>com.cycloneboy.springcloud</groupId>
             <artifactId>mafengwo-service-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <!-- spring cloud-->
