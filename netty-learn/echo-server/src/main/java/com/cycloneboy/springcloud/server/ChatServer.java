@@ -13,6 +13,8 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.ImmediateEventExecutor;
 import java.net.InetSocketAddress;
+import java.security.cert.CertificateException;
+import javax.net.ssl.SSLException;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -41,7 +43,7 @@ public class ChatServer {
 
   }
 
-  private ChannelInitializer<Channel> createInitializer(ChannelGroup channelGroup) {
+  protected ChannelInitializer<Channel> createInitializer(ChannelGroup channelGroup) {
     return new ChatServerInitializer(channelGroup);
   }
 
@@ -54,7 +56,8 @@ public class ChatServer {
     group.shutdownGracefully();
   }
 
-  public static void main(String[] args) throws InterruptedException {
+  public static void main(String[] args)
+      throws InterruptedException, SSLException, CertificateException {
     if (args.length != 1) {
       log.error("Usage: {} <port>", EchoServer.class.getSimpleName());
       System.exit(1);
