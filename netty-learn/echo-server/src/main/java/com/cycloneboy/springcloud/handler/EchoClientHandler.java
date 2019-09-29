@@ -1,11 +1,10 @@
 package com.cycloneboy.springcloud.handler;
 
-import io.netty.buffer.ByteBuf;
+import com.cycloneboy.springcloud.common.Constants;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.util.CharsetUtil;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -13,16 +12,29 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Sharable
-public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
+public class EchoClientHandler extends ChannelInboundHandlerAdapter {
 
-  @Override
-  protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
-    log.info("Client receive : {} ", msg.toString(CharsetUtil.UTF_8));
-  }
+  int counter = 0;
+
+  static final String ECHO_REQ =
+      "Hi, Cycloneboy. Welcome to Netty." + Constants.DELIMITER_$;
 
   @Override
   public void channelActive(ChannelHandlerContext ctx) throws Exception {
-    ctx.writeAndFlush(Unpooled.copiedBuffer("netty rocks!", CharsetUtil.UTF_8));
+    for (int i = 0; i < 10; i++) {
+      ctx.writeAndFlush(Unpooled.copiedBuffer(ECHO_REQ.getBytes()));
+    }
+
+  }
+
+  @Override
+  public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    log.info("This is {} Client receive : [{}] ", ++counter, msg);
+  }
+
+  @Override
+  public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+    ctx.flush();
   }
 
   @Override

@@ -1,12 +1,11 @@
 package com.cycloneboy.springcloud.handler;
 
+import com.cycloneboy.springcloud.common.Constants;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -16,18 +15,19 @@ import lombok.extern.slf4j.Slf4j;
 @Sharable
 public class EchoServerHandler extends ChannelInboundHandlerAdapter {
 
+  int counter = 0;
+
   @Override
   public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-    ByteBuf in = (ByteBuf) msg;
-    log.info("server receive {}", in.toString(CharsetUtil.UTF_8));
-    ctx.write(in);
+    String body = (String) msg;
+    log.info("This is {} server receive :[{}]", ++counter, body);
+    body += Constants.DELIMITER_$;
+
+    ByteBuf echo = Unpooled.copiedBuffer(body.getBytes());
+    ctx.writeAndFlush(echo);
 
   }
 
-  @Override
-  public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-    ctx.writeAndFlush(Unpooled.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);
-  }
 
   @Override
   public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
