@@ -61,6 +61,7 @@ public class EchoServer {
               // 绑定业务逻辑
               ByteBuf delimiter = Unpooled.copiedBuffer(DELIMITER_$.getBytes());
               ch.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, delimiter));
+//              ch.pipeline().addLast(new FixedLengthFrameDecoder(20));
               ch.pipeline().addLast(new StringDecoder());
               ch.pipeline().addLast(echoServerHandler);
             }
