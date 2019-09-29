@@ -1,6 +1,7 @@
-package com.cycloneboy.springcloud;
+package com.cycloneboy.springcloud.client;
 
 import com.cycloneboy.springcloud.handler.EchoClientHandler;
+import com.cycloneboy.springcloud.server.EchoServer;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;

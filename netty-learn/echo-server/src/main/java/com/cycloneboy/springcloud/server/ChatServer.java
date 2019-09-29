@@ -1,6 +1,5 @@
 package com.cycloneboy.springcloud.server;
 
-import com.cycloneboy.springcloud.EchoServer;
 import com.cycloneboy.springcloud.config.ChatServerInitializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;

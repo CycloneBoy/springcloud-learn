@@ -1,4 +1,4 @@
-package com.cycloneboy.springcloud;
+package com.cycloneboy.springcloud.server;
 
 import com.cycloneboy.springcloud.handler.EchoServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
