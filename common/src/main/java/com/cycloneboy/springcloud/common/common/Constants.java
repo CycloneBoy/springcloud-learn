@@ -78,5 +78,11 @@ public class Constants {
     // 历历在目的首页链接
     public static final String TRAVEL_NOTE_LIST_BY_YEAR_URL = "http://www.mafengwo.cn/app/calendar.php?year=";
 
+    /**
+     * 常用分页数量
+     */
+    public static final int PAGE_SIZE_10 = 10;
+    public static final int PAGE_SIZE_100 = 100;
+    public static final int PAGE_SIZE_1000 = 1000;
 
 }

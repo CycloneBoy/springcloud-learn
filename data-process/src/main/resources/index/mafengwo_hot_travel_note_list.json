@@ -1,0 +1,51 @@
+{
+  "mappings": {
+    "_doc": {
+      "properties": {
+        "id": {
+          "type": "text"
+        },
+        "country_name": {
+          "type": "text",
+          "analyzer": "ik_max_word",
+          "search_analyzer": "ik_max_word"
+        },
+        "country_url": {
+          "type": "text"
+        },
+        "city_name": {
+          "type": "text",
+          "analyzer": "ik_max_word",
+          "search_analyzer": "ik_max_word"
+        },
+        "city_url": {
+          "type": "text"
+        },
+        "city_index": {
+          "type": "keyword"
+        },
+        "total_page": {
+          "type": "text"
+        },
+        "total_number": {
+          "type": "text"
+        },
+        "image_total_number": {
+          "type": "text"
+        },
+        "crawl_status": {
+          "type": "text"
+        },
+        "crawl_time": {
+          "type": "text"
+        },
+        "create_datetime": {
+          "type": "date"
+        },
+        "city_name_en": {
+          "type": "text"
+        }
+      }
+    }
+  }
+}

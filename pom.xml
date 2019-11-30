@@ -33,6 +33,7 @@
         <module>kafka-hello</module>
         <module>travel-note</module>
         <module>netty-learn</module>
+        <module>data-process</module>
     </modules>
 
     <properties>
