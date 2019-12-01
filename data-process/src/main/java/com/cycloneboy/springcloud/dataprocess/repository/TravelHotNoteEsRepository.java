@@ -1,6 +1,6 @@
 package com.cycloneboy.springcloud.dataprocess.repository;
 
-import com.cycloneboy.springcloud.dataprocess.entity.TravelHotNoteEs;
+import com.cycloneboy.springcloud.dataprocess.entity.es.TravelHotNoteEs;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Component;
 

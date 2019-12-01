@@ -4,7 +4,7 @@ import static com.cycloneboy.springcloud.common.common.Constants.PAGE_SIZE_1000;
 
 import com.cycloneboy.springcloud.dataprocess.dao.TravelHotNoteDetailRepository;
 import com.cycloneboy.springcloud.dataprocess.entity.TravelHotNoteDetail;
-import com.cycloneboy.springcloud.dataprocess.entity.TravelHotNoteDetailEs;
+import com.cycloneboy.springcloud.dataprocess.entity.es.TravelHotNoteDetailEs;
 import com.cycloneboy.springcloud.dataprocess.repository.TravelHotNoteDetailEsRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +46,14 @@ public class TravelHotNoteDetailService {
    * 第一次转存278页
    * <p>
    * 266,900  266 278,900
+   * 500
+   * 500,900
+   *
+   * 991  992,900
+   *
+   *  1230
+   *
+   *  1390
    */
   public Integer transformDataToEs(Integer startPage, Integer endPage) {
 
@@ -72,6 +80,7 @@ public class TravelHotNoteDetailService {
       });
 
       hotNoteDetailEsRepository.saveAll(travelHotNoteEsList);
+      log.info("success save page : {} ", i);
     }
     Integer total = (endPage - startPage) * PAGE_SIZE_1000;
 

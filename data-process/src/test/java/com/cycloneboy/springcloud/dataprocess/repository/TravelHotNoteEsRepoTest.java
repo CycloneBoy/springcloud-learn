@@ -4,7 +4,7 @@ import static com.cycloneboy.springcloud.common.common.Constants.PAGE_SIZE_10;
 
 import com.cycloneboy.springcloud.dataprocess.dao.TravelHotNoteRepository;
 import com.cycloneboy.springcloud.dataprocess.entity.TravelHotNote;
-import com.cycloneboy.springcloud.dataprocess.entity.TravelHotNoteEs;
+import com.cycloneboy.springcloud.dataprocess.entity.es.TravelHotNoteEs;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;

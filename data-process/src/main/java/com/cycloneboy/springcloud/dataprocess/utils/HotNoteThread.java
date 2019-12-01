@@ -4,7 +4,7 @@ import static com.cycloneboy.springcloud.common.common.Constants.PAGE_SIZE_1000;
 
 import com.cycloneboy.springcloud.dataprocess.dao.TravelHotNoteDetailRepository;
 import com.cycloneboy.springcloud.dataprocess.entity.TravelHotNoteDetail;
-import com.cycloneboy.springcloud.dataprocess.entity.TravelHotNoteDetailEs;
+import com.cycloneboy.springcloud.dataprocess.entity.es.TravelHotNoteDetailEs;
 import com.cycloneboy.springcloud.dataprocess.repository.TravelHotNoteDetailEsRepository;
 import java.util.ArrayList;
 import java.util.List;

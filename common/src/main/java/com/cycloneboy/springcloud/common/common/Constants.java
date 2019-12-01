@@ -85,4 +85,7 @@ public class Constants {
     public static final int PAGE_SIZE_100 = 100;
     public static final int PAGE_SIZE_1000 = 1000;
 
+    public static final String MAFENGWO_HOST_URL = "http://www.mafengwo.cn";
+
+
 }

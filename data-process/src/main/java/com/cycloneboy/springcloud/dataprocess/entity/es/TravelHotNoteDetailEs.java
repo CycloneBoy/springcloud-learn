@@ -1,4 +1,4 @@
-package com.cycloneboy.springcloud.dataprocess.entity;
+package com.cycloneboy.springcloud.dataprocess.entity.es;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;

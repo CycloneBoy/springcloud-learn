@@ -21,6 +21,13 @@ public class TravelHotNoteDetailController {
   @Autowired
   private TravelHotNoteDetailService hotNoteDetailService;
 
+  /**
+   * 导入mysql 数据到es
+   *
+   * @param start
+   * @param end
+   * @return
+   */
   @GetMapping("/transform")
   public BaseResponse transformDataToEs(@RequestParam(name = "start") int start,
       @RequestParam(name = "end") int end) {
