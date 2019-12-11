@@ -136,11 +136,10 @@ public class SeckillController {
   }
 
   /**
-   * 秒杀二(程序锁)
+   * 秒杀三(AOP程序锁)
    * <p>
    * 使用ReentrantLock重入锁，由于事物提交和锁释放的先后顺序也会导致超卖
    * <p>
-   * 卖出一共秒杀出102件商品
    *
    * @param seckillId
    * @return
@@ -179,4 +178,89 @@ public class SeckillController {
     return BaseResponse.ok(resultMessage);
   }
 
+  /**
+   * 秒杀四(数据库悲观锁)
+   *
+   * <p>秒杀四(少买) 基于数据库悲观锁实现，查询加锁，
+   * 然后更新，由于使用了 限流 注解(可自行注释)，这里会出现少买。
+   *
+   * @param seckillId
+   * @return
+   */
+  @ApiOperation(value = "秒杀四(数据库悲观锁)")
+  @PostMapping("/startDbPccOne")
+  public BaseResponse startDbPccOne(long seckillId) {
+    int skillNum = 1000;
+    //N个购买者
+    final CountDownLatch latch = new CountDownLatch(skillNum);
+
+    seckillService.deleteSeckill(seckillId);
+    final long killId = seckillId;
+    log.info("开始秒杀四(数据库悲观锁)");
+
+    for (int i = 0; i < skillNum; i++) {
+      final long userId = i;
+      Runnable task = () -> {
+        BaseResponse response = seckillService.startSeckillDbpccOne(seckillId, userId);
+        log.info("用户:{} {}-{}", userId, response.getCode(), response.getMessage());
+        latch.countDown();
+      };
+      executor.execute(task);
+    }
+
+    try {
+      // 等待所有人任务结束
+      latch.await();
+      Long seckillCount = seckillService.getSeckillCount(seckillId);
+      resultMessage = "一共秒杀出 " + seckillCount + " 件商品";
+      log.info(resultMessage);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+
+    return BaseResponse.ok(resultMessage);
+  }
+
+  /**
+   * 秒杀四(数据库悲观锁)
+   *
+   * <p>秒杀四(少买) 基于数据库悲观锁实现，查询加锁，
+   * 然后更新，由于使用了 限流 注解(可自行注释)，这里会出现少买。
+   *
+   * @param seckillId
+   * @return
+   */
+  @ApiOperation(value = "秒杀五(数据库悲观锁)")
+  @PostMapping("/startDbPccTwo")
+  public BaseResponse startDbPccTwo(long seckillId) {
+    int skillNum = 1000;
+    //N个购买者
+    final CountDownLatch latch = new CountDownLatch(skillNum);
+
+    seckillService.deleteSeckill(seckillId);
+    final long killId = seckillId;
+    log.info("开始秒杀五(数据库悲观锁),结果正常、数据库锁最优实现");
+
+    for (int i = 0; i < skillNum; i++) {
+      final long userId = i;
+      Runnable task = () -> {
+        BaseResponse response = seckillService.startSeckillDbpccTwo(seckillId, userId);
+        log.info("用户:{} {}-{}", userId, response.getCode(), response.getMessage());
+        latch.countDown();
+      };
+      executor.execute(task);
+    }
+
+    try {
+      // 等待所有人任务结束
+      latch.await();
+      Long seckillCount = seckillService.getSeckillCount(seckillId);
+      resultMessage = "一共秒杀出 " + seckillCount + " 件商品";
+      log.info(resultMessage);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+
+    return BaseResponse.ok(resultMessage);
+  }
 }

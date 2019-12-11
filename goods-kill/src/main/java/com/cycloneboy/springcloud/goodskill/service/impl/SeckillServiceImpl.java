@@ -81,7 +81,8 @@ public class SeckillServiceImpl implements SeckillService {
    * @param userid
    * @return
    */
-  private void saveOrder(long seckillId, long userid) {
+  @Transactional
+  public void saveOrder(long seckillId, long userid) {
     String nativeSql;//创建订单
     SuccessKilled successKilled = new SuccessKilled();
     successKilled.setSeckillId(seckillId);
@@ -89,7 +90,7 @@ public class SeckillServiceImpl implements SeckillService {
     successKilled.setState(Constants.SUCCESS_KILLED_STAT_SUCCESS);
     Timestamp createTime = new Timestamp(new Date().getTime());
     successKilled.setCreateTime(createTime);
-    // 此方法母亲有问题,所以采用下面的方法保存
+    // 此方法有问题,所以采用下面的方法保存
     //      dynamicQuery.save(successKilled);
 
     nativeSql =
@@ -121,11 +122,26 @@ public class SeckillServiceImpl implements SeckillService {
    *
    * @param seckillId 商品ID
    */
-  private void subStoke(long seckillId, Integer number) {
+  @Transactional
+  public void subStock(long seckillId, Integer number) {
     // 扣库存
     String nativeSql = "update " + Constants.TABLE_NAME_SECKILL + " set number=number-" + number
         + " where seckill_id=?";
     dynamicQuery.nativeExecuteUpdate(nativeSql, new Object[]{seckillId});
+  }
+
+  /**
+   * 减少库存,售卖一件商品, 减少库存要查看库存数量是否大于零
+   *
+   * @param seckillId 商品ID
+   */
+  @Transactional
+  public Integer subStockAndCheck(long seckillId, Integer number) {
+    // 扣库存
+    String nativeSql = "update " + Constants.TABLE_NAME_SECKILL + " set number=number-" + number
+        + " where seckill_id=? and number >0";
+    int count = dynamicQuery.nativeExecuteUpdate(nativeSql, new Object[]{seckillId});
+    return count;
   }
 
   /**
@@ -134,9 +150,26 @@ public class SeckillServiceImpl implements SeckillService {
    * @param seckillId
    * @return 库存
    */
-  private Long checkStoke(long seckillId) {
+  @Transactional
+  public Long checkStock(long seckillId) {
     //校验库存
     String nativeSql = "select number from " + Constants.TABLE_NAME_SECKILL + " where seckill_id=?";
+    Object object = dynamicQuery.nativeQueryObject(nativeSql, new Object[]{seckillId});
+    Long number = ((Number) object).longValue();
+    return number;
+  }
+
+  /**
+   * 查询库存库存,上悲观锁
+   *
+   * @param seckillId
+   * @return 库存
+   */
+  @Transactional
+  public Long checkStockForUpdate(long seckillId) {
+    //校验库存
+    String nativeSql =
+        "select number from " + Constants.TABLE_NAME_SECKILL + " where seckill_id=? for update";
     Object object = dynamicQuery.nativeQueryObject(nativeSql, new Object[]{seckillId});
     Long number = ((Number) object).longValue();
     return number;
@@ -170,14 +203,13 @@ public class SeckillServiceImpl implements SeckillService {
   @ServiceLimit(limitType = LimitType.IP)
   @Transactional
   public BaseResponse startSeckill(long seckillId, long userid) {
-    String nativeSql;
     //校验库存
-    Long number = checkStoke(seckillId);
-    if (number < 0) {
+    Long number = checkStock(seckillId);
+    if (number <= 0) {
       return new BaseResponse(SeckillStatEnum.END);
     }
 
-    subStoke(seckillId, 1);
+    subStock(seckillId, 1);
     saveOrder(seckillId, userid);
 
     //支付
@@ -205,13 +237,13 @@ public class SeckillServiceImpl implements SeckillService {
      */
     try {
       lock.lock();
-      Long number = checkStoke(seckillId);
-      if (number < 0) {
+      Long number = checkStock(seckillId);
+      if (number <= 0) {
         return new BaseResponse(SeckillStatEnum.END);
       }
 
       // 减少库存
-      subStoke(seckillId, 1);
+      subStock(seckillId, 1);
       // 保存订单
       saveOrder(seckillId, userid);
 
@@ -237,13 +269,13 @@ public class SeckillServiceImpl implements SeckillService {
   public BaseResponse startSeckillAopLock(long seckillId, long userid) {
     //来自码云码友<马丁的早晨>的建议 使用AOP + 锁实现
     // 检查库存
-    Long number = checkStoke(seckillId);
-    if (number < 0) {
+    Long number = checkStock(seckillId);
+    if (number <= 0) {
       return new BaseResponse(SeckillStatEnum.END);
     }
 
     // 减少库存
-    subStoke(seckillId, 1);
+    subStock(seckillId, 1);
     // 保存订单
     saveOrder(seckillId, userid);
 
@@ -251,27 +283,58 @@ public class SeckillServiceImpl implements SeckillService {
   }
 
   /**
-   * 秒杀 二、数据库悲观锁
+   * 秒杀 四、数据库悲观锁
+   * 注意这里 限流注解 可能会出现少买 自行调整
    *
    * @param seckillId
    * @param userid
    * @return
    */
   @Override
+  @ServiceLimit(limitType = LimitType.IP)
+  @Transactional
   public BaseResponse startSeckillDbpccOne(long seckillId, long userid) {
-    return null;
+    //单用户抢购一件商品或者多件都没有问题
+    // SELECT number FROM seckill WHERE seckill_id=? FOR UPDATE
+    //校验库存
+    Long number = checkStockForUpdate(seckillId);
+    if (number <= 0) {
+      return new BaseResponse(SeckillStatEnum.END);
+    }
+
+    subStock(seckillId, 1);
+    saveOrder(seckillId, userid);
+
+    //支付
+    return new BaseResponse(SeckillStatEnum.SUCCESS);
+
   }
 
   /**
-   * 秒杀 三、数据库悲观锁
+   * 秒杀 五、数据库悲观锁
+   *
+   * SHOW STATUS LIKE 'innodb_row_lock%';
+   * 如果发现锁争用比较严重，如InnoDB_row_lock_waits和InnoDB_row_lock_time_avg的值比较高
    *
    * @param seckillId
    * @param userid
    * @return
    */
   @Override
+  @Transactional
   public BaseResponse startSeckillDbpccTwo(long seckillId, long userid) {
-    return null;
+    //单用户抢购一件商品没有问题、但是抢购多件商品不建议这种写法
+    // UPDATE seckill  SET number=number-1 WHERE seckill_id=? AND number>0
+
+    Integer count = subStockAndCheck(seckillId, 1);
+    if (count <= 0) {
+      return new BaseResponse(SeckillStatEnum.END);
+    }
+
+    saveOrder(seckillId, userid);
+
+    //支付
+    return new BaseResponse(SeckillStatEnum.SUCCESS);
   }
 
   /**
