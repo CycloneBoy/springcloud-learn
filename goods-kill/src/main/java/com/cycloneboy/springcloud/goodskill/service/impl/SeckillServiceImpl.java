@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Create by  sl on 2019-12-10 17:43
  */
+@Slf4j
 @Service
 public class SeckillServiceImpl implements SeckillService {
 
@@ -57,6 +59,7 @@ public class SeckillServiceImpl implements SeckillService {
    */
   @Override
   public Seckill getById(long seckillId) {
+
     return seckillRepository.getOne(seckillId);
   }
 
@@ -133,6 +136,24 @@ public class SeckillServiceImpl implements SeckillService {
   /**
    * 减少库存,售卖一件商品, 减少库存要查看库存数量是否大于零
    *
+   * 乐观锁
+   *
+   * @param seckillId 商品ID
+   */
+  @Transactional
+  public Integer subStockAndCheckVersion(long seckillId, Long number, Integer version) {
+    // 扣库存
+    //乐观锁
+    String nativeSql = "update " + Constants.TABLE_NAME_SECKILL + " set number=number-" + number
+        + " ,version=version+1 where seckill_id=? and version = ?";
+    int count = dynamicQuery
+        .nativeExecuteUpdate(nativeSql, new Object[]{number, seckillId, version});
+    return count;
+  }
+
+  /**
+   * 减少库存,售卖一件商品, 减少库存要查看库存数量是否大于零
+   *
    * @param seckillId 商品ID
    */
   @Transactional
@@ -143,6 +164,7 @@ public class SeckillServiceImpl implements SeckillService {
     int count = dynamicQuery.nativeExecuteUpdate(nativeSql, new Object[]{seckillId});
     return count;
   }
+
 
   /**
    * 查询库存库存
@@ -345,8 +367,24 @@ public class SeckillServiceImpl implements SeckillService {
    * @return
    */
   @Override
-  public BaseResponse startSeckillDbocc(long seckillId, long userid) {
-    return null;
+  public BaseResponse startSeckillDbocc(long seckillId, long userid, long number) {
+    Seckill seckill = getById(seckillId);
+    log.info("seckill:{}", seckill.toString());
+    //剩余的数量应该要大于等于秒杀的数量
+    if (seckill.getNumber() < number) {
+      return new BaseResponse(SeckillStatEnum.END);
+    }
+
+    Integer count = subStockAndCheckVersion(seckillId, number, seckill.getVersion());
+    if (count <= 0) {
+      return new BaseResponse(SeckillStatEnum.END);
+    }
+
+    saveOrder(seckillId, userid);
+
+    //支付
+    return new BaseResponse(SeckillStatEnum.SUCCESS);
+
   }
 
   /**
@@ -357,7 +395,7 @@ public class SeckillServiceImpl implements SeckillService {
    * @return
    */
   @Override
-  public BaseResponse startSeckillTemplate(long seckillId, long userid) {
+  public BaseResponse startSeckillTemplate(long seckillId, long userid, long number) {
     return null;
   }
 }

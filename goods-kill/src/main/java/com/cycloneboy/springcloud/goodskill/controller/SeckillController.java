@@ -222,10 +222,10 @@ public class SeckillController {
   }
 
   /**
-   * 秒杀四(数据库悲观锁)
+   * 秒杀六(数据乐观锁实现)
    *
-   * <p>秒杀四(少买) 基于数据库悲观锁实现，查询加锁，
-   * 然后更新，由于使用了 限流 注解(可自行注释)，这里会出现少买。
+   * 基于数据库乐观锁实现，先查询商品版本号，
+   * 然后根据版本号更新，判断更新数量。少量用户抢购的时候会出现 少买 的情况。
    *
    * @param seckillId
    * @return
@@ -239,12 +239,57 @@ public class SeckillController {
 
     seckillService.deleteSeckill(seckillId);
     final long killId = seckillId;
-    log.info("开始秒杀五(数据库悲观锁),结果正常、数据库锁最优实现");
+    log.info("开始秒杀六((数据乐观锁实现),结果正常、数据库锁最优实现");
 
     for (int i = 0; i < skillNum; i++) {
       final long userId = i;
       Runnable task = () -> {
         BaseResponse response = seckillService.startSeckillDbpccTwo(seckillId, userId);
+        log.info("用户:{} {}-{}", userId, response.getCode(), response.getMessage());
+        latch.countDown();
+      };
+      executor.execute(task);
+    }
+
+    try {
+      // 等待所有人任务结束
+      latch.await();
+      Long seckillCount = seckillService.getSeckillCount(seckillId);
+      resultMessage = "一共秒杀出 " + seckillCount + " 件商品";
+      log.info(resultMessage);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+
+    return BaseResponse.ok(resultMessage);
+  }
+
+
+  /**
+   * 秒杀五(数据库悲观锁)
+   * <p>
+   * 基于数据库悲观锁实现，更新加锁并判断剩余数量。
+   *
+   * @param seckillId
+   * @return
+   */
+  @ApiOperation(value = "秒杀六(数据库乐观锁)")
+  @PostMapping("/startDbOcc")
+  public BaseResponse startDbOcc(long seckillId) {
+    int skillNum = 1000;
+    //N个购买者
+    final CountDownLatch latch = new CountDownLatch(skillNum);
+
+    seckillService.deleteSeckill(seckillId);
+    final long killId = seckillId;
+    log.info("开始秒杀六(正常、数据库锁最优实现)");
+
+    for (int i = 0; i < skillNum; i++) {
+      final long userId = i;
+      Runnable task = () -> {
+        //这里使用的乐观锁、可以自定义抢购数量、如果配置的抢购人数比较少、比如120:100(人数:商品) 会出现少买的情况
+        //用户同时进入会出现更新失败的情况
+        BaseResponse response = seckillService.startSeckillDbocc(seckillId, userId, 1);
         log.info("用户:{} {}-{}", userId, response.getCode(), response.getMessage());
         latch.countDown();
       };

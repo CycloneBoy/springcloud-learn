@@ -93,7 +93,7 @@ public interface SeckillService {
    * @param userid
    * @return
    */
-  BaseResponse startSeckillDbocc(long seckillId, long userid);
+  BaseResponse startSeckillDbocc(long seckillId, long userid, long number);
 
 
   /**
@@ -103,5 +103,5 @@ public interface SeckillService {
    * @param userid
    * @return
    */
-  BaseResponse startSeckillTemplate(long seckillId, long userid);
+  BaseResponse startSeckillTemplate(long seckillId, long userid, long number);
 }
