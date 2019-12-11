@@ -18,7 +18,16 @@ public class Constants {
    */
   public static final int SECKILL_DEFAULT_NUMBER = 100;
 
+  /**
+   * 商品秒杀成功\失败的状态
+   */
   public static final short SUCCESS_KILLED_STAT_SUCCESS = 0;
+
   public static final short SUCCESS_KILLED_STAT_FAILED = 1;
+
+  /**
+   * 并发访问的次数
+   */
+  public static final int THREAD_SIZE = 1000;
 
 }

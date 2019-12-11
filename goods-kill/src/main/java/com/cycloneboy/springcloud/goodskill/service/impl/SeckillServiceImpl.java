@@ -4,6 +4,7 @@ import com.cycloneboy.springcloud.common.domain.BaseResponse;
 import com.cycloneboy.springcloud.goodskill.common.Constants;
 import com.cycloneboy.springcloud.goodskill.common.aop.ServiceLimit;
 import com.cycloneboy.springcloud.goodskill.common.aop.ServiceLimit.LimitType;
+import com.cycloneboy.springcloud.goodskill.common.aop.Servicelock;
 import com.cycloneboy.springcloud.goodskill.common.dynamicquery.DynamicQuery;
 import com.cycloneboy.springcloud.goodskill.common.enums.SeckillStatEnum;
 import com.cycloneboy.springcloud.goodskill.entity.Seckill;
@@ -211,6 +212,7 @@ public class SeckillServiceImpl implements SeckillService {
 
       // 减少库存
       subStoke(seckillId, 1);
+      // 保存订单
       saveOrder(seckillId, userid);
 
     } catch (Exception e) {
@@ -230,8 +232,22 @@ public class SeckillServiceImpl implements SeckillService {
    * @return
    */
   @Override
+  @Servicelock
+  @Transactional
   public BaseResponse startSeckillAopLock(long seckillId, long userid) {
-    return null;
+    //来自码云码友<马丁的早晨>的建议 使用AOP + 锁实现
+    // 检查库存
+    Long number = checkStoke(seckillId);
+    if (number < 0) {
+      return new BaseResponse(SeckillStatEnum.END);
+    }
+
+    // 减少库存
+    subStoke(seckillId, 1);
+    // 保存订单
+    saveOrder(seckillId, userid);
+
+    return new BaseResponse(SeckillStatEnum.SUCCESS);
   }
 
   /**
