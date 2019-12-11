@@ -6,7 +6,7 @@ import lombok.Getter;
  * create by CycloneBoy on 2019-05-26 17:27
  */
 @Getter
-public enum HttpExceptionEnum {
+public enum HttpExceptionEnum implements AbstractHttpException {
 
   SUCCESS("0", "Operation success.", "success"),
 

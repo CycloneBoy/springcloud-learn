@@ -1,6 +1,7 @@
 package com.cycloneboy.springcloud.common.domain;
 
 
+import com.cycloneboy.springcloud.common.common.AbstractHttpException;
 import com.cycloneboy.springcloud.common.common.HttpExceptionEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,6 +26,10 @@ public class BaseResponse {
         return new BaseResponse();
     }
 
+    public static BaseResponse ok(String message) {
+        return new BaseResponse(HttpExceptionEnum.SUCCESS, message);
+    }
+
     public static BaseResponse failed(){
         return new BaseResponse(HttpExceptionEnum.FAILED);
     }
@@ -45,19 +50,19 @@ public class BaseResponse {
         this.data = data;
     }
 
-    public BaseResponse(HttpExceptionEnum exception) {
+    public BaseResponse(AbstractHttpException exception) {
         this.code = exception.getCode();
         this.message = exception.getMessage();
         this.data = "";
     }
 
-    public BaseResponse(HttpExceptionEnum exception, String message) {
+    public BaseResponse(AbstractHttpException exception, String message) {
         this.code = exception.getCode();
         this.message = message;
         this.data = "";
     }
 
-    public BaseResponse(HttpExceptionEnum exception, Object data) {
+    public BaseResponse(AbstractHttpException exception, Object data) {
         this.code = exception.getCode();
         this.message = exception.getMessage();
         this.data = data;
