@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Create by  sl on 2019-12-10 17:43
  */
 @Slf4j
-@Service
+@Service("seckillService")
 public class SeckillServiceImpl implements SeckillService {
 
   /**

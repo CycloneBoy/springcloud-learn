@@ -3,6 +3,8 @@ package com.cycloneboy.springcloud.goodskill.controller;
 import com.cycloneboy.springcloud.common.domain.BaseResponse;
 import com.cycloneboy.springcloud.goodskill.common.enums.SeckillStatEnum;
 import com.cycloneboy.springcloud.goodskill.entity.SuccessKilled;
+import com.cycloneboy.springcloud.goodskill.queue.disruptor.DisruptorUtil;
+import com.cycloneboy.springcloud.goodskill.queue.disruptor.SeckillEvent;
 import com.cycloneboy.springcloud.goodskill.queue.jvm.SeckillQueue;
 import com.cycloneboy.springcloud.goodskill.service.SeckillService;
 import io.swagger.annotations.Api;
@@ -355,6 +357,55 @@ public class SeckillController {
 
     try {
       // 等待所有人任务结束
+      // 等待所有人任务结束
+      latch.await();
+      Thread.sleep(10000);
+      Long seckillCount = seckillService.getSeckillCount(seckillId);
+      resultMessage = "一共秒杀出 " + seckillCount + " 件商品";
+      log.info(resultMessage);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+
+    return BaseResponse.ok(resultMessage);
+  }
+
+  /**
+   * 秒杀八(基于高性能队列 Disruptor实现，同步消费,少买)
+   *
+   * <p>基于进程内队列 LinkedBlockingQueue 实现，同步消费，由于使用了 限流 注解(可自行注释)， * <br>
+   * 这里会出现少买。如果想正常，去掉startSeckil方法上的@ServiceLimit注解即可。
+   *
+   * @param seckillId
+   * @return
+   */
+  @ApiOperation(value = "秒杀八(基于高性能队列 Disruptor实现,少买)")
+  @PostMapping("/startDistruptorQueue")
+  public BaseResponse startDistruptorQueue(long seckillId) {
+    int skillNum = 1000;
+    //N个购买者
+    final CountDownLatch latch = new CountDownLatch(skillNum);
+
+    seckillService.deleteSeckill(seckillId);
+    final long killId = seckillId;
+    log.info("开始秒杀八(基于高性能队列 Disruptor实现，同步消费,少买)");
+
+    for (int i = 0; i < skillNum; i++) {
+      final long userId = i;
+      Runnable task = () -> {
+        SeckillEvent seckillEvent = new SeckillEvent();
+        seckillEvent.setSeckillId(killId);
+        seckillEvent.setUserId(userId);
+
+        // 生产者往队列中添加一条消息
+        DisruptorUtil.producer(seckillEvent);
+
+        latch.countDown();
+      };
+      executor.execute(task);
+    }
+
+    try {
       // 等待所有人任务结束
       latch.await();
       Thread.sleep(10000);
