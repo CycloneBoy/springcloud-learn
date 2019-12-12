@@ -221,7 +221,7 @@ public class SeckillServiceImpl implements SeckillService {
    * @return
    */
   @Override
-  @ServiceLimit(limitType = LimitType.IP)
+//  @ServiceLimit(limitType = LimitType.IP)
   @Transactional
   public BaseResponse startSeckill(long seckillId, long userid) {
     //校验库存
