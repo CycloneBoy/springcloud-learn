@@ -59,8 +59,7 @@ public class SeckillServiceImpl implements SeckillService {
    */
   @Override
   public Seckill getById(long seckillId) {
-
-    return seckillRepository.getOne(seckillId);
+    return seckillRepository.findById(seckillId).orElse(new Seckill());
   }
 
   /**
@@ -144,8 +143,8 @@ public class SeckillServiceImpl implements SeckillService {
   public Integer subStockAndCheckVersion(long seckillId, Long number, Integer version) {
     // 扣库存
     //乐观锁
-    String nativeSql = "update " + Constants.TABLE_NAME_SECKILL + " set number=number-" + number
-        + " ,version=version+1 where seckill_id=? and version = ?";
+    String nativeSql = "update " + Constants.TABLE_NAME_SECKILL + " set number=number- ?" +
+        " ,version=version+1 where seckill_id=? and version = ?";
     int count = dynamicQuery
         .nativeExecuteUpdate(nativeSql, new Object[]{number, seckillId, version});
     return count;
@@ -367,14 +366,16 @@ public class SeckillServiceImpl implements SeckillService {
    * @return
    */
   @Override
+  @Transactional
   public BaseResponse startSeckillDbocc(long seckillId, long userid, long number) {
     Seckill seckill = getById(seckillId);
-    log.info("seckill:{}", seckill.toString());
+//    log.info("seckill:{}", seckill.toString());
     //剩余的数量应该要大于等于秒杀的数量
     if (seckill.getNumber() < number) {
       return new BaseResponse(SeckillStatEnum.END);
     }
 
+    //乐观锁
     Integer count = subStockAndCheckVersion(seckillId, number, seckill.getVersion());
     if (count <= 0) {
       return new BaseResponse(SeckillStatEnum.END);

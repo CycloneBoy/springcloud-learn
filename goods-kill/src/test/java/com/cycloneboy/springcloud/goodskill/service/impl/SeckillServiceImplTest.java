@@ -1,5 +1,6 @@
 package com.cycloneboy.springcloud.goodskill.service.impl;
 
+import com.cycloneboy.springcloud.goodskill.repository.SeckillRepository;
 import com.cycloneboy.springcloud.goodskill.service.SeckillService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -17,10 +18,18 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class SeckillServiceImplTest {
 
   @Autowired
+  private SeckillRepository seckillRepository;
+
+  @Autowired
   private SeckillService seckillService;
 
   @Test
   public void getById() {
     log.info("seckill: {}", seckillService.getById(1000L).toString());
+  }
+
+  @Test
+  public void get() {
+    log.info("seckill: {}", seckillRepository.findById(1000l).get());
   }
 }
