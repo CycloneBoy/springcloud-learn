@@ -30,4 +30,10 @@ public class Constants {
    */
   public static final int THREAD_SIZE = 1000;
 
+  /**
+   * redis 前缀
+   */
+  public static final String KEY_PREFIX_VALUE = "cycloneboy:seckill:value:";
+
+
 }
