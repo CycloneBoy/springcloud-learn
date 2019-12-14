@@ -87,7 +87,7 @@ spring:
     store-type: redis
   thymeleaf:
     cache: false
-    mode: LEGACYHTML5
+    mode: HTML
 
 
 ## Mybatis配置

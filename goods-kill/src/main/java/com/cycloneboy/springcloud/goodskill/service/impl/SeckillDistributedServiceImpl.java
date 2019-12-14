@@ -5,10 +5,12 @@ import com.cycloneboy.springcloud.goodskill.common.Constants;
 import com.cycloneboy.springcloud.goodskill.common.dynamicquery.DynamicQuery;
 import com.cycloneboy.springcloud.goodskill.common.enums.SeckillStatEnum;
 import com.cycloneboy.springcloud.goodskill.distributedLock.redis.RedissLockUtil;
+import com.cycloneboy.springcloud.goodskill.distributedLock.zookeeper.ZkLockUtil;
 import com.cycloneboy.springcloud.goodskill.entity.SuccessKilled;
 import com.cycloneboy.springcloud.goodskill.service.SeckillDistributedService;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -156,8 +158,32 @@ public class SeckillDistributedServiceImpl implements SeckillDistributedService 
    * @return
    */
   @Override
+  @Transactional
   public BaseResponse startSeckillZkLock(long seckillId, long userId) {
-    return null;
+    boolean result = false;
+    try {
+
+      result = ZkLockUtil.acquire(3, TimeUnit.SECONDS);
+
+      if (!result) {
+        return new BaseResponse(SeckillStatEnum.FAILED);
+      }
+      //校验库存
+      Long number = checkStock(seckillId);
+      if (number <= 0) {
+        return new BaseResponse(SeckillStatEnum.END);
+      }
+      saveOrder(seckillId, userId);
+      subStockAndCheck(seckillId, 1);
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      //释放锁
+      if (result) {
+        ZkLockUtil.release();
+      }
+    }
+    return new BaseResponse(SeckillStatEnum.SUCCESS);
   }
 
   /**

@@ -35,5 +35,6 @@ public class Constants {
    */
   public static final String KEY_PREFIX_VALUE = "cycloneboy:seckill:value:";
 
+  public static final String ZK_ADDRESS = "127.0.0.1:2181";
 
 }

@@ -91,5 +91,38 @@ public class SeckillDistributedController {
     return BaseResponse.ok(resultMessage);
   }
 
+  @ApiOperation(value = "秒杀二(zookeeper分布式锁)")
+  @PostMapping("/startZkLock")
+  public BaseResponse startZkLock(long seckillId) {
+    int skillNum = 1000;
+    //N个购买者
+    final CountDownLatch latch = new CountDownLatch(skillNum);
 
+    seckillService.deleteSeckill(seckillId);
+    final long killId = seckillId;
+    log.info("秒杀二(zookeeper分布式锁)");
+
+    for (int i = 0; i < skillNum; i++) {
+      final long userId = i;
+      Runnable task = () -> {
+        BaseResponse response = seckillDistributedService.startSeckillZkLock(seckillId, userId);
+        log.info("用户:{} {}-{}", userId, response.getCode(), response.getMessage());
+        latch.countDown();
+      };
+      executor.execute(task);
+    }
+
+    try {
+      // 等待所有人任务结束
+      latch.await();
+      Thread.sleep(5000);
+      Long seckillCount = seckillService.getSeckillCount(seckillId);
+      resultMessage = "一共秒杀出 " + seckillCount + " 件商品";
+      log.info(resultMessage);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+
+    return BaseResponse.ok(resultMessage);
+  }
 }
