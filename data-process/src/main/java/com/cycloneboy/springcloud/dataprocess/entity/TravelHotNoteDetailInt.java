@@ -18,12 +18,11 @@ import lombok.Data;
  */
 @Data
 @Entity
-@Table(name = "t_travel_hot_destination_note")
-public class TravelHotNoteDetail implements Serializable {
+@Table(name = "t_travel_hot_destination_note_1")
+public class TravelHotNoteDetailInt implements Serializable {
 
 
-  private static final long serialVersionUID = -8360299394324455025L;
-
+  private static final long serialVersionUID = 260562129392537893L;
   /**
    * id
    */
@@ -94,17 +93,17 @@ public class TravelHotNoteDetail implements Serializable {
   /**
    * 游记浏览总数
    */
-  private String travelViewCount;
+  private Integer travelViewCount;
 
   /**
    * 游记评论总数
    */
-  private String travelCommentCount;
+  private Integer travelCommentCount;
 
   /**
    * 游记顶的总数
    */
-  private String travelUpCount;
+  private Integer travelUpCount;
 
   /**
    * 游记父亲ID

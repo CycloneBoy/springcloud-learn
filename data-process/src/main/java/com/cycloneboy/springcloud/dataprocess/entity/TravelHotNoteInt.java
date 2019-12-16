@@ -9,16 +9,15 @@ import javax.persistence.Table;
 import lombok.Data;
 
 /**
- * 马蜂窝热门景点的热门游记列表汇总
- * <p>
  * Create by  sl on 2019-11-30 13:25
  */
 @Data
 @Entity
-@Table(name = "t_hot_travel_note_list")
-public class TravelHotNote implements Serializable {
+@Table(name = "t_hot_travel_note_list_1")
+public class TravelHotNoteInt implements Serializable {
 
-  private static final long serialVersionUID = -5782366369183364270L;
+  private static final long serialVersionUID = -8197260678960926201L;
+
   /**
    * ID
    */
@@ -54,17 +53,17 @@ public class TravelHotNote implements Serializable {
   /**
    * 游记总页数
    */
-  private String totalPage;
+  private Integer totalPage;
 
   /**
    * 游记总数
    */
-  private String totalNumber;
+  private Integer totalNumber;
 
   /**
    * 游记图片总数
    */
-  private String imageTotalNumber;
+  private Integer imageTotalNumber;
 
   /**
    * 是否已经爬取

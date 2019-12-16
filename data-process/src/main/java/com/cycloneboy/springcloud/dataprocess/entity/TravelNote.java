@@ -11,7 +11,7 @@ import lombok.Data;
 
 /**
  * <p>
- *
+ * 峰首热门游记列表
  * </p>
  *
  * @author cycloneboy
