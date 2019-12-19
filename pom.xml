@@ -38,6 +38,8 @@
         <module>data-process</module>
         <!-- 商品秒杀 -->
         <module>goods-kill</module>
+        <!-- 搜房网实战 -->
+        <module>search-house</module>
     </modules>
 
     <properties>
