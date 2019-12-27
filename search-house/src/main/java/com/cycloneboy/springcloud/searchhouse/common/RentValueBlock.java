@@ -2,10 +2,14 @@ package com.cycloneboy.springcloud.searchhouse.common;
 
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 带区间的常用数值定义
  */
+@Getter
+@Setter
 public class RentValueBlock {
 
     /**
@@ -47,29 +51,6 @@ public class RentValueBlock {
         this.max = max;
     }
 
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public int getMin() {
-        return min;
-    }
-
-    public void setMin(int min) {
-        this.min = min;
-    }
-
-    public int getMax() {
-        return max;
-    }
-
-    public void setMax(int max) {
-        this.max = max;
-    }
 
     public static RentValueBlock matchPrice(String key) {
         RentValueBlock block = PRICE_BLOCK.get(key);
