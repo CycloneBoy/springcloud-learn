@@ -1,6 +1,8 @@
 package com.cycloneboy.springcloud.springlearn.springcommon.cap10.aop;
 
+import java.util.Arrays;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -23,23 +25,24 @@ public class LogAspect {
   }
 
   @Before("pointCut()")
-  public void logStart() {
-    log.info("除法运行开始....参数列表是:{}");
+  public void logStart(JoinPoint joinPoint) {
+    log.info("除法运行开始....参数列表是:{} - {}", joinPoint.getSignature().getName(),
+        Arrays.asList(joinPoint.getArgs()));
   }
 
   @After("pointCut()")
   public void logEnd() {
-    log.info("除法运行结束....参数列表是:{}");
+    log.info("除法运行结束....");
   }
 
-  @AfterReturning("pointCut()")
-  public void logReturn() {
-    log.info("除法正常返回....运行结果是是:{}");
+  @AfterReturning(value = "pointCut()", returning = "result")
+  public void logReturn(Object result) {
+    log.info("除法正常返回....运行结果是:{}", result.toString());
   }
 
-  @AfterThrowing("pointCut()")
-  public void logException() {
-    log.info("除法运行异常信息是....异常信息是:{}");
+  @AfterThrowing(value = "pointCut()", throwing = "exception")
+  public void logException(Exception exception) {
+    log.info("除法运行异常信息是....异常信息是:{}", exception);
   }
 
   @Around("pointCut()")

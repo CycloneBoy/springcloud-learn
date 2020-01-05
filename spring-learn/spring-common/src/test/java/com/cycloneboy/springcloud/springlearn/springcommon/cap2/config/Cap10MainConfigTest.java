@@ -24,7 +24,7 @@ public class Cap10MainConfigTest {
     log.info("IOC创建完成...........................");
 
     Calculator calculator = app.getBean(Calculator.class);
-    int result = calculator.div(4, 3);
+    int result = calculator.div(4, 1);
 
     log.info("{}", result);
 

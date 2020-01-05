@@ -37,6 +37,7 @@ public class SlImportBeanDefinitionRegistrar implements ImportBeanDefinitionRegi
     // 如果Dog和Fish都存在与IOC容器,则创建Pig
 
     if (bean1 && bean2) {
+      // 封装bean
       BeanDefinition beanDefinition = new RootBeanDefinition(Pig.class);
       registry.registerBeanDefinition("pig", beanDefinition);
     }
