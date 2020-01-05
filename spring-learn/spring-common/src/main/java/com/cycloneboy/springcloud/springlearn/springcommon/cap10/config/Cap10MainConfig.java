@@ -24,7 +24,8 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
  */
 @Slf4j
 @Configuration
-@EnableAspectJAutoProxy
+// @EnableAspectJAutoProxy(proxyTargetClass = true) 启用CGLib 动态代理
+@EnableAspectJAutoProxy(proxyTargetClass = false)
 //@ComponentScan({"com.cycloneboy.springcloud.springlearn.springcommon.cap10"})
 public class Cap10MainConfig {
 
