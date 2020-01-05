@@ -1,4 +1,4 @@
-package com.cycloneboy.springcloud.springlearn.springcommon.cop5.config;
+package com.cycloneboy.springcloud.springlearn.springcommon.cap5.config;
 
 import com.cycloneboy.springcloud.springlearn.springcommon.model.Order;
 import lombok.extern.slf4j.Slf4j;

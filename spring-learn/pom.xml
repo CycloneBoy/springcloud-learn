@@ -20,6 +20,7 @@
   </properties>
 
   <modules>
+    <!-- spring bean 的基础 -->
     <module>spring-common</module>
   </modules>
 

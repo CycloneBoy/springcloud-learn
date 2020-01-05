@@ -42,6 +42,8 @@
         <module>search-house</module>
         <!-- redis 学习-->
         <module>redis-learn</module>
+        <!-- spring 学习 -->
+        <module>spring-learn</module>
     </modules>
 
     <properties>
