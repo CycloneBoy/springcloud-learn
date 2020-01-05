@@ -14,7 +14,8 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @ComponentScan({"com.cycloneboy.springcloud.springlearn.springcommon.cap9.controller",
     "com.cycloneboy.springcloud.springlearn.springcommon.cap9.service",
-    "com.cycloneboy.springcloud.springlearn.springcommon.cap9.dao"
+    "com.cycloneboy.springcloud.springlearn.springcommon.cap9.dao",
+    "com.cycloneboy.springcloud.springlearn.springcommon.cap9.model"
 })
 @PropertySource(value = "classpath:/application.properties")
 public class Cap9MainConfig {

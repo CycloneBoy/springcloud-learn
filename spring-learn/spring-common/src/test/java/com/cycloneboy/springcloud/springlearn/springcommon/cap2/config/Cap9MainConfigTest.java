@@ -30,4 +30,15 @@ public class Cap9MainConfigTest {
 
 
   }
+
+  @Test
+  public void test02() {
+    AnnotationConfigApplicationContext app = new AnnotationConfigApplicationContext(
+        Cap9MainConfig.class);
+    log.info("IOC创建完成...........................:{}", app);
+
+    app.close();
+
+
+  }
 }
