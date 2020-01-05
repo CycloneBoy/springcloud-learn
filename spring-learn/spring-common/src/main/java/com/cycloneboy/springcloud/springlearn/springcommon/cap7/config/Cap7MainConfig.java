@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class Cap7MainConfig {
 
-
   @Bean("order01")
   public Order order() {
     log.info("给容器中创建order: order01...........................");
