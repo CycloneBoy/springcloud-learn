@@ -1,4 +1,4 @@
-package com.cycloneboy.springcloud.springlearn.springcommon.cap11.config;
+package com.cycloneboy.springcloud.springlearn.springdb.config;
 
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
@@ -8,12 +8,13 @@ import org.springframework.aop.support.JdkRegexpMethodPointcut;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
 /**
  * Created by CycloneBoy on 2017/7/18.
  */
-
+@Configuration
 public class DruidConfig {
 
   /**
@@ -65,7 +66,7 @@ public class DruidConfig {
   @Scope("prototype")
   public JdkRegexpMethodPointcut druidStatPointcut() {
     JdkRegexpMethodPointcut pointcut = new JdkRegexpMethodPointcut();
-    pointcut.setPattern("com.cycloneboy.springcloud.springlearn.springcommon.*");
+    pointcut.setPattern("com.cycloneboy.springcloud.springlearn.springdb.*");
     return pointcut;
   }
 

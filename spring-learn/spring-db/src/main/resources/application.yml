@@ -1,5 +1,5 @@
 server:
-  port: 10015
+  port: 10115
   servlet:
     session:
       # session最大超时时间(分钟)，默认为30
@@ -8,12 +8,36 @@ server:
     # tomcat最大线程数，默认为200
     max-threads: 100
 
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8000/eureka/
+  #      defaultZone: http://peer1:8000/eureka/, http://peer2:8001/eureka/
+  instance:
+    prefer-ip-address: true
+
 spring:
   application:
-    name: data-process
+    name: spring-db
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
+      profile: dev
+      label: master
+      #      uri: http://localhost:9060/
+      username: admin
+      password: admin
+      fail-fast: true
+    stream:
+      default-binder: kafka
+      bindings:
+        travel-image-send:
+          destination: travel-image-send
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/goods_kill?useSSL=false&charset=utf8
+    url: jdbc:mysql://localhost:3306/mafenwo?useSSL=false&charset=utf8
     username: root
     password: 123456
     type: com.alibaba.druid.pool.DruidDataSource
@@ -43,6 +67,15 @@ spring:
       max-pool-prepared-statement-per-connection-size: 20
       # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
       filters: stat,wall,log4j2
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database: mysql
+  thymeleaf:
+    cache: false
+    mode: HTML
 
 
 ## Mybatis配置

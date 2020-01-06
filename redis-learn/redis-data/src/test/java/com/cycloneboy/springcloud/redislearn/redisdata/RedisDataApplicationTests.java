@@ -1,11 +1,11 @@
 package com.cycloneboy.springcloud.redislearn.redisdata;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+import org.junit.Test;
+
 class RedisDataApplicationTests {
 
   @Test
-  void contextLoads() {}
+  void contextLoads() {
+  }
 }

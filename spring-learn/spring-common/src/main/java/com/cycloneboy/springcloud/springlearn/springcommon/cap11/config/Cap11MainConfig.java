@@ -27,7 +27,10 @@ public class Cap11MainConfig {
   @Bean
   @ConfigurationProperties(prefix = "spring.datasource")
   public DruidDataSource datasource() {
-    return new DruidDataSource();
+
+    DruidDataSource source = new DruidDataSource();
+    // dataSource.setUrl();
+    return source;
   }
 
   @Bean
