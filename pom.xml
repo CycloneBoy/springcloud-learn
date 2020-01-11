@@ -44,6 +44,8 @@
         <module>redis-learn</module>
         <!-- spring 学习 -->
         <module>spring-learn</module>
+        <!-- 电商项目 -->
+        <module>sl-mall</module>
     </modules>
 
     <properties>
@@ -118,6 +120,7 @@
 
     <dependencyManagement>
         <dependencies>
+
 
             <!-- cycloneboy -->
             <dependency>
@@ -223,6 +226,13 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>3.8.1</version>
+            </dependency>
+
+            <!-- Jasypt -->
+            <dependency>
+                <groupId>com.github.ulisesbocchio</groupId>
+                <artifactId>jasypt-spring-boot-starter</artifactId>
+                <version>2.1.0</version>
             </dependency>
 
         </dependencies>

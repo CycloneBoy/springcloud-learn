@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.cycloneboy.springcloud</groupId>
+		<artifactId>learn</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<groupId>com.cycloneboy.springcloud.slmall</groupId>
+	<artifactId>sl-mall</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>sl-mall</name>
+	<description>商场</description>
+
+	<modules>
+		<module>slmall-common</module>
+		<module>slmall-module</module>
+	</modules>
+
+	<properties>
+		<java.version>1.8</java.version>
+		<swagger.version>2.7.0</swagger.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+				<dependency>
+					<groupId>com.cycloneboy.springcloud.slmall</groupId>
+					<artifactId>slmall-common</artifactId>
+					<version>0.0.1-SNAPSHOT</version>
+				</dependency>
+
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger2</artifactId>
+				<version>${swagger.version}</version>
+			</dependency>
+
+
+
+		</dependencies>
+	</dependencyManagement>
+
+</project>

@@ -24,6 +24,7 @@
     <module>spring-common</module>
     <!-- spring database 事务 -->
     <module>spring-db</module>
+
   </modules>
 
   <dependencies>

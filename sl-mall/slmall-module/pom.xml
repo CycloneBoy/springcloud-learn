@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.cycloneboy.springcloud.slmall</groupId>
+		<artifactId>sl-mall</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>slmall-module</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>slmall-module</name>
+	<packaging>pom</packaging>
+	<description>Demo project for Spring Boot</description>
+
+	<modules>
+<!--		商城后端-->
+		<module>slmall-portal</module>
+		<module>slmall-portal-api</module>
+	</modules>
+
+	<properties>
+		<java.version>1.8</java.version>
+	</properties>
+
+	<dependencies>
+
+		<!-- 单元测试 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+
+			<dependency>
+				<groupId>com.cycloneboy.springcloud.slmall.module.portal</groupId>
+				<artifactId>slmall-portal-api</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+
+
+</project>
