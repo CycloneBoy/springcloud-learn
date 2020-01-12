@@ -39,4 +39,10 @@ public class UserController extends BaseXCloudController<User, Long> {
         log.info("{}", u.getUsername());
         return new BaseResponse(u);
     }
+
+    @GetMapping("/test")
+    public String test() {
+        return "test";
+    }
+
 }

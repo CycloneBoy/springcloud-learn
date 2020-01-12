@@ -36,7 +36,7 @@ public abstract class BaseXCloudController<E, ID extends Serializable> {
     @ApiOperation(value = "通过id获取")
     public BaseResponse get(@PathVariable ID id) {
 
-        E entity = getService().get(id);
+        E entity = getService().get(id).orElse(null);
         return new BaseResponse(entity);
     }
 

@@ -2,6 +2,7 @@ package com.cycloneboy.springcloud.slmall.common.base;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -22,8 +23,8 @@ public interface BaseXCloudService<E, ID extends Serializable> {
    * @param id
    * @return
    */
-  public default E get(ID id) {
-    return getRepository().findById(id).get();
+  public default Optional<E> get(ID id) {
+    return getRepository().findById(id);
   }
 
   /**

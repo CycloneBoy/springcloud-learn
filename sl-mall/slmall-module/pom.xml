@@ -16,9 +16,12 @@
 	<description>Demo project for Spring Boot</description>
 
 	<modules>
-<!--		商城后端-->
+		<!--		商城后端-->
 		<module>slmall-portal</module>
 		<module>slmall-portal-api</module>
+		<!--		商品管理-->
+		<module>slmall-goods</module>
+		<module>slmall-goods-api</module>
 	</modules>
 
 	<properties>

@@ -8,12 +8,12 @@ public class CommonConstant {
   /**
    * 正常状态
    */
-  public static final Integer STATUS_NORMAL = 0;
+  public static final Integer STATUS_NORMAL = 1;
 
   /**
    * 禁用状态
    */
-  public static final Integer STATUS_DISABLE = -1;
+  public static final Integer STATUS_DISABLE = 0;
 
   /**
    * 用户默认头像

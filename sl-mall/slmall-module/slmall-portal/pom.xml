@@ -28,6 +28,12 @@
 			<scope>compile</scope>
 		</dependency>
 
+		<!-- slmall-common -->
+		<dependency>
+			<groupId>com.cycloneboy.springcloud.slmall</groupId>
+			<artifactId>slmall-common</artifactId>
+		</dependency>
+
 		<!-- cycloneboy -->
 		<dependency>
 			<groupId>com.cycloneboy.springcloud</groupId>

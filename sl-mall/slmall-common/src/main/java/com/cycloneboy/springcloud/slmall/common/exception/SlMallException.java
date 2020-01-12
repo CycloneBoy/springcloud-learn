@@ -8,4 +8,8 @@ public class SlMallException extends RuntimeException {
   public SlMallException(String msg) {
     super(msg);
   }
+
+  public SlMallException(SlMallExceptionEnum exceptionEnum) {
+    super(exceptionEnum.getMessage());
+  }
 }
