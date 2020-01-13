@@ -147,7 +147,13 @@ public class OrderController {
         }
 
         ServerResponse serverResponse = iOrderService.queryOrderPayStatus(user.getId(), orderNo);
-        if (serverResponse.isSuccess()) {
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (!serverResponse.isSuccess()) {
             return ServerResponse.createBySuccess(true);
         }
         return ServerResponse.createBySuccess(false);

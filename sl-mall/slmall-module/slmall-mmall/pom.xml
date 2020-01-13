@@ -176,11 +176,11 @@
 			<version>1.1.1</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>2.3.1</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>com.google.code.gson</groupId>-->
+<!--			<artifactId>gson</artifactId>-->
+<!--			<version>2.3.1</version>-->
+<!--		</dependency>-->
 		<dependency>
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-core</artifactId>
@@ -193,23 +193,6 @@
 			<version>2.9.0</version>
 		</dependency>
 
-		<!-- alipay begin -->
-		<!--    <dependency>-->
-		<!--      <groupId>com.alipay</groupId>-->
-		<!--      <artifactId>alipay-sdk-java</artifactId>-->
-		<!--      <version>20170725114550</version>-->
-		<!--    </dependency>-->
-		<!--    <dependency>-->
-		<!--      <groupId>com.alipay</groupId>-->
-		<!--      <artifactId>alipay-trade-sdk</artifactId>-->
-		<!--      <version>20161215</version>-->
-		<!--    </dependency>-->
-
-		<dependency>
-			<groupId>com.google.zxing</groupId>
-			<artifactId>core</artifactId>
-			<version>3.2.1</version>
-		</dependency>
 
 
 	</dependencies>
