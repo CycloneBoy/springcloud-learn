@@ -1,6 +1,8 @@
 package com.cycloneboy.springcloud.slmall.module.mmall.controller.portal;
 
 
+import com.cycloneboy.springcloud.slmall.common.base.BaseXCloudController;
+import com.cycloneboy.springcloud.slmall.common.base.BaseXCloudService;
 import com.cycloneboy.springcloud.slmall.module.mmall.common.Const;
 import com.cycloneboy.springcloud.slmall.module.mmall.common.ResponseCode;
 import com.cycloneboy.springcloud.slmall.module.mmall.common.ServerResponse;
@@ -8,6 +10,7 @@ import com.cycloneboy.springcloud.slmall.module.mmall.entity.User;
 import com.cycloneboy.springcloud.slmall.module.mmall.service.IUserService;
 import io.swagger.annotations.Api;
 import javax.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,14 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Created by geely
  */
+@Slf4j
 @Api(description = "用户接口")
 @RestController
 @RequestMapping("/user/")
-public class UserController {
+public class UserController extends BaseXCloudController<User, Integer> {
 
 
     @Autowired
-    private IUserService iUserService;
+    private IUserService userService;
 
 
     /**
@@ -36,7 +40,7 @@ public class UserController {
      */
     @PostMapping(value = "login.do")
     public ServerResponse<User> login(String username, String password, HttpSession session) {
-        ServerResponse<User> response = iUserService.login(username, password);
+        ServerResponse<User> response = userService.login(username, password);
         if (response.isSuccess()) {
             session.setAttribute(Const.CURRENT_USER, response.getData());
         }
@@ -51,13 +55,13 @@ public class UserController {
 
     @PostMapping(value = "register.do")
     public ServerResponse<String> register(User user) {
-        return iUserService.register(user);
+        return userService.register(user);
     }
 
 
     @PostMapping(value = "check_valid.do")
     public ServerResponse<String> checkValid(String str, String type) {
-        return iUserService.checkValid(str, type);
+        return userService.checkValid(str, type);
     }
 
 
@@ -73,21 +77,21 @@ public class UserController {
 
     @PostMapping(value = "forget_get_question.do")
     public ServerResponse<String> forgetGetQuestion(String username) {
-        return iUserService.selectQuestion(username);
+        return userService.selectQuestion(username);
     }
 
 
     @PostMapping(value = "forget_check_answer.do")
     public ServerResponse<String> forgetCheckAnswer(String username, String question,
         String answer) {
-        return iUserService.checkAnswer(username, question, answer);
+        return userService.checkAnswer(username, question, answer);
     }
 
 
     @PostMapping(value = "forget_reset_password.do")
     public ServerResponse<String> forgetRestPassword(String username, String passwordNew,
         String forgetToken) {
-        return iUserService.forgetResetPassword(username, passwordNew, forgetToken);
+        return userService.forgetResetPassword(username, passwordNew, forgetToken);
     }
 
 
@@ -98,19 +102,23 @@ public class UserController {
         if (user == null) {
             return ServerResponse.createByErrorMessage("用户未登录");
         }
-        return iUserService.resetPassword(passwordOld, passwordNew, user);
+        return userService.resetPassword(passwordOld, passwordNew, user);
     }
 
 
     @PostMapping(value = "update_information.do")
     public ServerResponse<User> update_information(HttpSession session, User user) {
+
+        log.info("update_information:{}", user);
+
         User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
         if (currentUser == null) {
             return ServerResponse.createByErrorMessage("用户未登录");
         }
+
         user.setId(currentUser.getId());
         user.setUsername(currentUser.getUsername());
-        ServerResponse<User> response = iUserService.updateInformation(user);
+        ServerResponse<User> response = userService.updateInformation(user);
         if (response.isSuccess()) {
             response.getData().setUsername(currentUser.getUsername());
             session.setAttribute(Const.CURRENT_USER, response.getData());
@@ -125,8 +133,12 @@ public class UserController {
             return ServerResponse
                 .createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "未登录,需要强制登录status=10");
         }
-        return iUserService.getInformation(currentUser.getId());
+        return userService.getInformation(currentUser.getId());
     }
 
 
+    @Override
+    public BaseXCloudService<User, Integer> getService() {
+        return userService;
+    }
 }
