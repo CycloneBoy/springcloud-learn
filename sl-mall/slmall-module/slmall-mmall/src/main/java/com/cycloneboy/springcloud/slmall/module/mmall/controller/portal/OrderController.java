@@ -38,8 +38,7 @@ public class OrderController {
     public ServerResponse create(HttpSession session, Integer shippingId) {
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),
-                ResponseCode.NEED_LOGIN.getDesc());
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN);
         }
         return iOrderService.createOrder(user.getId(), shippingId);
     }
@@ -49,8 +48,7 @@ public class OrderController {
     public ServerResponse cancel(HttpSession session, Long orderNo) {
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),
-                ResponseCode.NEED_LOGIN.getDesc());
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN);
         }
         return iOrderService.cancel(user.getId(), orderNo);
     }
@@ -60,8 +58,7 @@ public class OrderController {
     public ServerResponse getOrderCartProduct(HttpSession session) {
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),
-                ResponseCode.NEED_LOGIN.getDesc());
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN);
         }
         return iOrderService.getOrderCartProduct(user.getId());
     }
@@ -71,8 +68,7 @@ public class OrderController {
     public ServerResponse detail(HttpSession session, Long orderNo) {
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),
-                ResponseCode.NEED_LOGIN.getDesc());
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN);
         }
         return iOrderService.getOrderDetail(user.getId(), orderNo);
     }
@@ -83,8 +79,7 @@ public class OrderController {
         @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),
-                ResponseCode.NEED_LOGIN.getDesc());
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN);
         }
         return iOrderService.getOrderList(user.getId(), pageNum, pageSize);
     }
@@ -94,8 +89,7 @@ public class OrderController {
     public ServerResponse pay(HttpSession session, Long orderNo, HttpServletRequest request) {
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),
-                ResponseCode.NEED_LOGIN.getDesc());
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN);
         }
         String path = request.getSession().getServletContext().getRealPath("upload");
         return iOrderService.pay(orderNo, user.getId(), path);
@@ -149,8 +143,7 @@ public class OrderController {
     public ServerResponse<Boolean> queryOrderPayStatus(HttpSession session, Long orderNo) {
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),
-                ResponseCode.NEED_LOGIN.getDesc());
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN);
         }
 
         ServerResponse serverResponse = iOrderService.queryOrderPayStatus(user.getId(), orderNo);

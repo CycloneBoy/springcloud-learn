@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.transaction.annotation.Transactional;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Import({Swagger2Config.class, JedisClientPool.class})
@@ -13,6 +14,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableJpaAuditing
 //@EnableCaching
 @EnableSwagger2
+@Transactional
 @SpringBootApplication
 public class SlmallMmallApplication {
 

@@ -41,4 +41,9 @@ public class OrderVo {
     //订单的明细
     private List<OrderItemVo> orderItemVoList;
 
+    private String imageHost;
+    private Integer shippingId;
+    private String receiverName;
+
+    private ShippingVo shippingVo;
 }
