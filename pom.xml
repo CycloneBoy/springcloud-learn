@@ -46,6 +46,7 @@
         <module>spring-learn</module>
         <!-- 电商项目 -->
         <module>sl-mall</module>
+        <module>elasticsearch-learn</module>
     </modules>
 
     <properties>
