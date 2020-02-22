@@ -22,7 +22,7 @@
 
   <properties>
     <junit.version>4.12</junit.version>
-    <netty.version>4.1.12.Final</netty.version>
+    <netty.version>4.1.42.Final</netty.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <msgpack.version>0.6.12</msgpack.version>
