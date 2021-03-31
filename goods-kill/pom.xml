@@ -171,7 +171,7 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>27.1-jre</version>
+			<version>29.0-jre</version>
 		</dependency>
 
 		<!-- zookeeper 分布式锁、注意zookeeper版本  这里对应的是3.4.6 参考：https://blog.52itstyle.com/archives/3202/ -->
